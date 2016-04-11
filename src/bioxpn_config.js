@@ -1,3 +1,6 @@
+/* ****************************************************************************/
+//							Objecte BIOXPN_CONFIG
+/* ****************************************************************************/
 function BIOXPN_CONFIG()
 {
 
@@ -22,8 +25,14 @@ function BIOXPN_CONFIG()
 }; //Fi de BIOXPN_CONFIG()
 
 /* ****************************************************************************/
-									//METHODS
+//									METHODS
 /* ****************************************************************************/
+//Retorna un objecte XPN que coincideix amb acronim
+BIOXPN_CONFIG.prototype.get_xpn = function(acronim) 
+{
+    return (_.find(this.xpn, function(d){return d.acronim == acronim;}));
+};
+
 //Retorna el qid d'un parc donat el seu acronim
 BIOXPN_CONFIG.prototype.get_qid = function(acronim) 
 {
@@ -48,13 +57,15 @@ BIOXPN_CONFIG.prototype.get_URL_resourceslist = function(acronim)
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=data_resource&foffset=0&pageSize=0&sort=data_resource&dir=asc&fsort=index&flimit=-1';
 };
 
+//Retorna la URL per obtenir la llista de fons de dades per un acronim
+BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
+};
 
-
-/*
-	ALAurl_checklist_download = ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+wkt+'&facets=taxon_name&count=false&fsort=index&dir=asc';
-*/
-
-//Objecte XPN, constructor
+/* ************************************************************************** */
+//							Objecte XPN, constructor
+/* ************************************************************************** */
 function XPN(qid,acronim,nom_oficial)
 {
 	//Codi del filtre espacials a SOLR
@@ -66,7 +77,8 @@ function XPN(qid,acronim,nom_oficial)
 	//Nom del Parc
 	this.nom_oficial = nom_oficial;
 	
-}// Fi de XPN()
+};// Fi de XPN()
 
-
-
+XPN.prototype.get_qid = function(){return this.qid;};
+XPN.prototype.get_acronim = function(){return this.acronim;};
+XPN.prototype.get_nomoficial = function(){return this.nom_oficial;};
