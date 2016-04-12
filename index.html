@@ -28,8 +28,22 @@
 
 		<!-- UNDERSCORE  Array and object utils -->
 		<script type='text/javascript' src="http://underscorejs.org/underscore-min.js"></script>
+
+		<!-- Llibreria http://d3pie.org/ -->
+		<script type='text/javascript' src="./src/d3pie.min.js"></script>
+
+		<!-- Leaflet -->
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+		<link rel="stylesheet" href="css/leaflet_extras.css" />
 		
+		<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+		
+		<!-- PROJ4 -->
+		<script src="src/proj4-compressed.js" type="text/javascript"></script>
+		<script src="src/proj4leaflet.js" type="text/javascript"></script>		
+
 		<script type='text/javascript' src="./src/bioxpn_config.js"></script>
+		<script type='text/javascript' src="./src/mapa_obs.js"></script>
 		<script type='text/javascript' src="./src/loaddata.js"></script>
 		<script type='text/javascript' src="./src/graph.js"></script>
 		<script type='text/javascript' src="./src/query_server.js"></script>
@@ -39,10 +53,32 @@
 	<body role="document">
 		<div class="container-fluid">
 			<div id="intro"></div>
-			<div id="mapa_observacions"></div>
+			<div id="mapa_observacions" class="panel panel-default">
+				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
+				<div id="mapa-observacions-body" class="panel-body">
+					<div id="map" class="map" style='height:500px'></div>
+				</div>
+			</div>
 			<div id="taxons"></div>
-			<div id="observacions"></div>
-			<div id="fontsdades"></div>
+			<div id="observacions" class="panel panel-default">
+				<div id="observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
+				<div id="observacions-body" class="panel-body">
+					<div class="row">
+						<div id="observacions-body-regnes" class="col-md-4"></div>	
+						<div id="observacions-body-lifeforms" class="col-md-4"></div>
+						<div id="observacions-body-recordtype" class="col-md-4"></div>
+					</div>
+					<div id="observacions_ocurrence_date"></div>	
+				</div>
+			</div>
+			<div id="qualitatdades" class="panel panel-default">
+				<div id="qualitatdades-header" class="panel-heading"><h1 class="panel-title">Qualitat de les dades</h1></div>	
+				<div id="qualitatdades-body" class="panel-body"></div>	
+			</div>			
+			<div id="fontsdades" class="panel panel-default">
+				<div id="fontsdades-header" class="panel-heading"><h1 class="panel-title">Fonts de dades</h1></div>	
+				<div id="fontsdades-body" class="panel-body"></div>	
+			</div>
 			<div id="downloads"></div>
 			<div id="footer"></div>
 		</div>

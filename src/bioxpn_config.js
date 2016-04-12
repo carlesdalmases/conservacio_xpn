@@ -48,16 +48,54 @@ BIOXPN_CONFIG.prototype.get_nom_oficial = function(acronim)
 //Retorna la URL per obtenir la llista de taxons per un acronim
 BIOXPN_CONFIG.prototype.get_URL_taxonlist = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index';
+	return this.get_URL_acronim_facet(acronim, 'taxon_name');
 };
 
 //Retorna la URL per obtenir la llista de fons de dades per un acronim
 BIOXPN_CONFIG.prototype.get_URL_resourceslist = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=data_resource&foffset=0&pageSize=0&sort=data_resource&dir=asc&fsort=index&flimit=-1';
+	return this.get_URL_acronim_facet(acronim, 'data_resource');
 };
 
-//Retorna la URL per obtenir la llista de fons de dades per un acronim
+//Retorna la URL per obtenir les observacions per regnes i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_kingdom = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'kingdom');
+};
+
+//Retorna la URL per obtenir les observacions per formes de vida i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_lifeform = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'species_group');
+};
+
+//Retorna la URL per obtenir les observacions per tipus de registre i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_recordtype = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'record_type');
+};
+
+//Retorna la URL per obtenir les observacions per anys i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_occurrence_date = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'year');
+};
+
+//Retorna la URL per obtenir la qualitat de les dades per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_assertions_missing = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'assertions_missing');
+};
+
+
+BIOXPN_CONFIG.prototype.get_URL_acronim_facet = function(acronim, facet) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets='+facet+'&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
+};
+
+
+
+//Retorna la URL per descarregar una checklist
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
