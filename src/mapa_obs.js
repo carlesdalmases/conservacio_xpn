@@ -1,268 +1,127 @@
 function mapa_observacions(acronim)
 {
-	//Inicialitzar el mapa:
-	var center = [41.564786, 2.012173];
 
-	// ***************************************************************
-	var crs25831 = new L.Proj.CRS('EPSG:25831','+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-				   {resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25]});
-	// ***************************************************************
-	
-	var serveiTopoCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-	    layers: 'topo',
-	    format: 'image/jpeg',
-	    //crs: crs25831,
-	    continuousWorld: true,
-	    maxZoom: crs25831.options.resolutions.length,
-	    minZoom: 0,
-	    attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC'
-	});
+	//Instàncies dels objectes amb les capes WMS 
+	var icc = new CAPES_ICC();
+	var diba = new CAPES_DIBA();
+	var gbif = new CAPES_GBIF(acronim);	
 
-	var serveiOrtoCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-		layers: 'orto',
-		format: 'image/jpeg',
-		//crs: crs25831,
-		continuousWorld: true,
-		maxZoom: crs25831.options.resolutions.length,
-		minZoom: 0,	
-		attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC'
-	});
-
-	var serveitopoGrisCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-		layers: 'topogris',
-		format: 'image/jpeg',
-		//crs: crs25831,
-		continuousWorld: true,
-		maxZoom: crs25831.options.resolutions.length,
-		minZoom: 0,	
-		attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC'
-	});
-
-	var diba_xpn_limits = L.tileLayer.wms("http://sitmun.diba.cat/wms/servlet/XPE50?", {
-		layers: 'XPE50_111L',
-		format: 'image/png32',
-		//crs: crs25831,
-		continuousWorld: true,
-		maxZoom: 20,
-		minZoom: 0,	
-		attribution: 'Diputació de Barcelona',
-		transparent: true,
-	});
-
-	var gbifwms = L.tileLayer.wms("http://datos.gbif.es/biocache-service/mapping/wms/reflect?", {
-		layers: 'ALA:occurrences',
-		format: 'image/png',
-		//crs: crs25831,
-		continuousWorld: true,
-		maxZoom: 20,
-		minZoom: 0,	
-		attribution: 'GBIF.es',
-		transparent: true,
-	});
-/*
-	var gbifwms = new ol.layer.Tile({
-	    source: new ol.source.TileWMS({
-	        url: 'http://datos.gbif.es/biocache-service/mapping/wms/reflect?',
-	        params: {
-	            'LAYERS': 'ALA:occurrences',
-	            'VERSION': '1.1.1',
-	            'FORMAT': 'image/png',
-	            'TILED': true,
-	            'SERVICE': 'WMS',
-	            'TRANSPARENT': true,
-	            'BGCOLOR': 0x000000,
-	            'OUTLINE': true,
-	            'STYLE': 'opacity:0.8',
-	            'SRS': 'EPSG:3857',
-	            'ENV': 'colormode:basis_of_record;name:circle;size:4;opacity:1;',
-	            'q': '*:*,qid:1437461258889'
-	        }
-	    })
-	});
-*/
-	
-
-	//Afegeixo les layers al map
-	var map = L.map('map', {
-	      layers: [serveitopoGrisCache, diba_xpn_limits, gbifwms],
-	      //crs: crs25831,
-	      continuousWorld: true,
-	      worldCopyJump: false,
-	      center: center,
-	      zoom: 7,
-	});
-	
-	//Llegenda
-	var baseMaps = 
+	//MAPA
+	var map = new ol.Map(
 	{
-		"Topogr&agrave;fic": serveiTopoCache,
-		"Topogr&agrave;fic gris": serveitopoGrisCache,
-		"Ortofoto": serveiOrtoCache
-	};
-	
-	var overlayMaps = {"Parcs Naturals DIBA":diba_xpn_limits,
-					   "GBIF.es": gbifwms};
-	
-	//Escala
-	L.control.scale({imperial: false}).addTo(map);
-	
-	//Control de capes
-	L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-	
-	
-}//Fi de mapa_observacions()
-
-
-
-/*
-	var gbifwms = new ol.layer.Tile({
-	    source: new ol.source.TileWMS({
-	        url: 'http://datos.gbif.es/biocache-service/mapping/wms/reflect?',
-	        params: {
-	            'LAYERS': 'ALA:occurrences',
-	            'VERSION': '1.1.1',
-	            'FORMAT': 'image/png',
-	            'TILED': true,
-	            'SERVICE': 'WMS',
-	            'TRANSPARENT': true,
-	            'BGCOLOR': 0x000000,
-	            'OUTLINE': true,
-	            'STYLE': 'opacity:0.8',
-	            'SRS': 'EPSG:3857',
-	            'ENV': 'colormode:basis_of_record;name:circle;size:4;opacity:1;',
-	            'q': '*:*,qid:1437461258889'
-	        }
-	    })
+		target: 'map',
+		view: new ol.View({
+			projection: 'EPSG:3857',
+			center: ol.proj.fromLonLat(bioxpn_config.get_centermap_lonlat(acronim)),
+			zoom: bioxpn_config.get_zoom_initial(acronim),
+			minZoom: 10,
+			maxZoom: 18
+		})
 	});
 
+	//Calculo l'extent del mapa segons la vista inicial
+	mapextent = map.getView().calculateExtent(map.getSize());
+
+	//Instància de l'objecte amb la llista de controls del mapa
+	var controls_list = new CONTROLS(mapextent);
+	_.each(controls_list.getControls(), function(d){map.addControl(d)});
+
+	//TODO fixar el PAN sobre el mapa a mapextent.
+
+	//Consulta sobre el mapa
+	map.on("click", function(evt){gbif_consulta_observacions(map, gbif, evt)}); 
 
 
-
-
-	//Inicialitzar el mapa:
-	var center = [41.564786, 2.012173];
-
-	// ***************************************************************
-	var crs25831 = new L.Proj.CRS('EPSG:25831','+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-				   {resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25]});
-	// ***************************************************************
-
-	var serveiTopoCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-	    layers: 'topo',
-	    format: 'image/jpeg',
-	    crs: crs25831,
-	    continuousWorld: true,
-	    maxZoom: crs25831.options.resolutions.length,
-	    minZoom: 0,
-	    attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC',
-	});
-
-	var serveiOrtoCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-		layers: 'orto',
-		format: 'image/jpeg',
-		crs: crs25831,
-		continuousWorld: true,
-		maxZoom: crs25831.options.resolutions.length,
-		minZoom: 0,	
-		attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC',
-	});
-
-	var serveitopoGrisCache = L.tileLayer.wms("http://mapcache.icc.cat/map/bases/service?", {
-		layers: 'topogris',
-		format: 'image/jpeg',
-		crs: crs25831,
-		continuousWorld: true,
-		maxZoom: crs25831.options.resolutions.length,
-		minZoom: 0,	
-		attribution: 'Institut Cartogr&agrave;fic i Geol&oacute;gic de Catalunya -ICGC',
-	});
+	map.addLayer(icc.get_tilelayer('topogris'));
+	//map.addLayer(gbif.get_tilelayer('observacions'));
+	map.addLayer(diba.get_tilelayer('limitsxpn'));
 	
+	
+};//Fi de mapa_observacions()
 
-	//Afegeixo les layers al map
-	var map = L.map('map', {
-	      layers: [serveitopoGrisCache],
-	      crs: crs25831,
-	      continuousWorld: true,
-	      worldCopyJump: false,
-	      center: center,
-	      zoom: 7,
-	});
-
-	//Llegenda
-	var baseMaps = 
+function CONTROLS(mapextent)
+{
+	this.c = [
+	
+	new ol.control.ScaleLine(
 	{
-		"Topogr&agrave;fic": serveiTopoCache,
-		"Topogr&agrave;fic gris": serveitopoGrisCache,
-		"Ortofoto": serveiOrtoCache
-	};
-	
-	//var overlayMaps = {"Punts LIDAR":geojsonLayer};
-	
-	//Escala
-	L.control.scale({imperial: false}).addTo(map);
-	
-	//Control de capes
-	//L.control.layers(baseMaps, overlayMaps).addTo(map);
-	L.control.layers(baseMaps).addTo(map);
+		units: 'metric',
+		minWidth: 100
+	}),
 
-	//Consulta al SOLR
-	var URL_query = 'http://dalmases.ddns.net:8983/solr/lidar/select?q=*:*&wt=json&json.wrf=?&fl=xy,z,class&sort=random_1234%20desc&rows=1000';
-	
-	console.time("Query_SOLR");
-	query_server(URL_query).then
-	(
-			function(df)
-			{
-				console.timeEnd("Query_SOLR");
-				//CANVAS
-				// http://bl.ocks.org/sumbera/11114288
-				
-				console.time("Canvas_Layer");
-				var puntsLIDAR = L.canvasOverlay()
-						.params({data: df})
-			            .drawing(drawingOnCanvas)
-			            .addTo(map);
-			    
-				console.timeEnd("Canvas_Layer");
-				
-				//Afegeixo la capa a la llegenda
-				//TODO
-			}
-	);
-	
-
-	// **************************
-	// drawingOnCanvas()
-	// **************************
-	function drawingOnCanvas(canvasOverlay, params) 
+	new ol.control.MousePosition(
 	{
-		wkt = new Wkt.Wkt();
-	    var ctx = params.canvas.getContext('2d');
-	    ctx.clearRect(0, 0, params.canvas.width, params.canvas.height);
-	    ctx.fillStyle = "rgba(255,0,0, 1)";
-	    
-	    //Defineixo la projecció ETRS89-UTM31N segons el ICC
-	    proj4.defs('EPSG:25831','+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+		projection: ol.proj.get('EPSG:4326'),
+		units: 'degrees',
+		coordinateFormat: function(coordinate) {return ol.coordinate.format(coordinate, '{y}, {x}', 4)},
+	}),
+	
+	new ol.control.ZoomToExtent({extent: mapextent}),
+	new ol.control.Zoom()
+
+	//new ol.control.ZoomSlider()
+	];
+};
+
+CONTROLS.prototype.getControls = function()
+{
+	return this.c;	
+};
+
+function gbif_consulta_observacions(map, gbif, evt)
+{
+		var coord = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+		console.log('Click on: '+coord[0]+' ,'+coord[1]);
 		
-		console.time("Generacio_CANVAS");
-		$.each(params.options.data.response.docs, function(index, value)
-		{
-			wkt.read(value.xy);
-			
-			//Converteixo les coordenades a LAT/LONG
-			latlong = proj4('EPSG:25831','WGS84',[wkt.components[0].x, wkt.components[0].y]);
-			
-			//Creo el punt amb coordenades de pantalla
-			dot = canvasOverlay._map.latLngToContainerPoint([latlong[1], latlong[0]]);
-			ctx.beginPath();
-			//Dibuixo el punt
-			ctx.arc(dot.x, dot.y, 3, 0, Math.PI * 2);
-			//Omplo de color
-			ctx.fill();
-			ctx.closePath();			
-		});
-		console.timeEnd("Generacio_CANVAS");
-				
-	}; //Fi de drawingOnCanvas()
-*/
+		//Preguntar al servidor quines observacions hi ha en el click
+		
+		//Consulta asíncrona, si torna resultats, fer:
+		
+		//Mostrar la capa amb el punt(s) seleccionat(s)
+		set layer seleccio_punt_radi
+		map.addLayer(gbif.get_tilelayer('seleccio_puntradi'));
+
+		//Mostrar el popup
+		mostrar_popup(map, evt.coordinate);
+};
+
+function mostrar_popup(map, coordenades)
+{
+	//Exemple: http://jsfiddle.net/ro1ptr0k/26/
+	
+	//Demano els identificadors del POPUP del DOM
+	var container = document.getElementById('popup');
+	var content = document.getElementById('popup-content');
+	var closer = document.getElementById('popup-closer');
+		
+	/**
+	* Add a click handler to hide the popup.
+	* @return {boolean} Don't follow the href.
+	*/
+	closer.onclick = function() 
+	{
+		map.removeLayer(gbif.get_tilelayer('seleccio_puntradi'));
+		overlay.setPosition(undefined);
+		closer.blur();
+		return false;
+	};
+
+	//Contigunt
+	content.innerHTML = '<p>HOLA:</p><code>';
+
+	/*Contingut:
+		* Posició lat/lon del click
+		* Número d'observacions
+		* Número de tàxons
+		* Botó Descarregar llista tàxons
+		* Botó Descarregar llista observacions
+	*/
+	
+	/**
+	* Create an overlay to anchor the popup to the map.
+	*/
+	var overlay = new ol.Overlay({element: container});
+	map.addOverlay(overlay);
+	overlay.setPosition(coordenades);
+	
+}; //Fi de mostrar_popup

@@ -32,15 +32,17 @@
 		<!-- Llibreria http://d3pie.org/ -->
 		<script type='text/javascript' src="./src/d3pie.min.js"></script>
 
-		<!-- Leaflet -->
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-		<link rel="stylesheet" href="css/leaflet_extras.css" />
-		
-		<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-		
+		<!-- OpenLayers -->
+		<link rel="stylesheet" href="http://openlayers.org/en/v3.15.1/css/ol.css" type="text/css">
+		<link rel="stylesheet" href="css/map.css" type="text/css">
+		<script src="http://openlayers.org/en/v3.15.1/build/ol.js" type="text/javascript"></script>
+	
 		<!-- PROJ4 -->
-		<script src="src/proj4-compressed.js" type="text/javascript"></script>
-		<script src="src/proj4leaflet.js" type="text/javascript"></script>		
+
+		<script type='text/javascript' src="./src/layer.js"></script>
+		<script type='text/javascript' src="./src/mapa_layers_icc.js"></script>
+		<script type='text/javascript' src="./src/mapa_layers_diba.js"></script>
+		<script type='text/javascript' src="./src/mapa_layers_gbif.js"></script>
 
 		<script type='text/javascript' src="./src/bioxpn_config.js"></script>
 		<script type='text/javascript' src="./src/mapa_obs.js"></script>
@@ -56,7 +58,12 @@
 			<div id="mapa_observacions" class="panel panel-default">
 				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
 				<div id="mapa-observacions-body" class="panel-body">
-					<div id="map" class="map" style='height:500px'></div>
+					<div id="map" class="map">
+						<div id="popup" class="ol-popup">
+                			<a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                			<div id="popup-content"></div>
+            			</div>	
+					</div>
 				</div>
 			</div>
 			<div id="taxons"></div>

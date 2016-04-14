@@ -174,7 +174,7 @@ function graph_bar_fontdades(dades)
 		.style("font-size", "10px")
 		.style("font-family", "sans-serif")
 		// Make it a little transparent to tone down the black
-		.style("opacity", 0.5)
+		.style("opacity", 0.8)
 		// Format the number, calculo el tant per cent sumant tots els valors presents a da
 		.text(function(d){return percent(d.count/total_count);})
 		;
@@ -310,24 +310,9 @@ function graph_pie_template(div, titol, dades)
 	});
 };
 
-
+//Gràfic de les dates de l'observacions
 function graph_bar_observacions_ocurrence_date(dades)
 {
-/* 
- {
-          "label": "1999",
-          "count": 2
-        },
-        {
-          "label": "2000",
-          "count": 1332
-        },
-        {
-          "label": "2002",
-          "count": 8
-        },
-
-*/
 
 	//Les dades arriben ordenades per any, ascendent
 	//Calculo els acumulats
