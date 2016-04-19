@@ -49,3 +49,13 @@ right: 8px;
 content: "X";
 }
 
+.heatmap_legend
+{
+    position:absolute; 
+    right:20px; 
+    /*bottom:10px;*/ 
+    z-index:10000; 
+    /*width:100px;*/
+    /*height:200px;*/ 
+    /*background-image: url("YOUR_IMAGE.jpeg");*/
+}

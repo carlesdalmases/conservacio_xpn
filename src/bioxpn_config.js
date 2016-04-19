@@ -27,6 +27,11 @@ function BIOXPN_CONFIG()
 /* ****************************************************************************/
 //									METHODS
 /* ****************************************************************************/
+BIOXPN_CONFIG.prototype.get_ALAserver = function() 
+{
+    return this.ALAserver;
+};
+
 //Retorna un objecte XPN que coincideix amb acronim
 BIOXPN_CONFIG.prototype.get_xpn = function(acronim) 
 {
@@ -112,11 +117,18 @@ BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim)
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
 };
 
-//Retorna la URL per descarregar una checklist
+//Retorna la URL del servidor de mapes WMS
 BIOXPN_CONFIG.prototype.get_URL_WMS = function(acronim) 
 {
 	return this.ALAserver+'/biocache-service/mapping/wms/reflect?';
 };
+
+//Retorna la URL per obtenir la llista de taxon_name present a acronim
+BIOXPN_CONFIG.prototype.get_URL_taxonnamelist = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index'
+};
+
 
 
 /* ************************************************************************** */

@@ -1,4 +1,4 @@
-//Retorna un array d'objectes de tipus ICC amb les capes WMTS
+//Retorna un array d'objectes de tipus GBIF amb les capes WMTS
 
 function CAPES_GBIF(acronim)
 {
@@ -53,8 +53,8 @@ function CAPES_GBIF(acronim)
 					'OUTLINE': true,
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
-					//'ENV': 'colormode:basis_of_record;name:circle;size:4;opacity:1;',
-					'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
+					'ENV': 'colormode:grid;opacity:1;',
+					//'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
 					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
 				}
 			})
@@ -68,11 +68,18 @@ function CAPES_GBIF(acronim)
 //Mètode que retorna un objecte tile indicant el nom de la capa
 CAPES_GBIF.prototype.get_tilelayer = function(nom_layer)
 {
-	return _.find(this.gbif_layers, function(d){return d.label==nom_layer;}).gettilelayer();
+	x = _.find(this.gbif_layers, function(d){return d.label==nom_layer;});
+	if(_.isUndefined(x)){return;} else {return x.layer_tile}; 
+};
+
+//Mètode que retorna un la URL amb el PNG de la llegenda del heatmap
+CAPES_GBIF.prototype.get_heatmap_legend = function(acronim)
+{
+	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'
 };
 
 
-CAPES_GBIF.prototype.set_layer_selection_taxon	= function(taxon)
+CAPES_GBIF.prototype.set_layer_selection_taxon = function(taxon_name)
 {
 	var la = new LAYER(
 		'seleccio_taxon', 
@@ -93,8 +100,9 @@ CAPES_GBIF.prototype.set_layer_selection_taxon	= function(taxon)
 					'OUTLINE': true,
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
-					'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
-					'q': 'taxon_name:'+taxon+',qid:'+bioxpn_config.get_qid(this.a)
+					'ENV': 'color:ffd700;name:circle;size:4;opacity:1;',
+					'q': ',qid:'+bioxpn_config.get_qid(this.a),
+					'fq': 'taxon_name:'+taxon_name
 				}
 			})
 		})
@@ -106,21 +114,18 @@ CAPES_GBIF.prototype.set_layer_selection_taxon	= function(taxon)
 	if(i>-1)
 	{
 		//Existeix, poso la LAYER en el mateix index de l'array
-		console.log('Existeix');
 		this.gbif_layers[i] = la;
 	}
 	else
 	{
 		//No existeix, faig un push
-		console.log('NO existeix');
 		this.gbif_layers.push(la);
 	}
 	
 	console.log(this.gbif_layers);
-
 };
 
-CAPES_GBIF.prototype.set_layer_selection_puntradi	= function(coordenades, radi)
+CAPES_GBIF.prototype.set_layer_selection_puntradi = function(coordenades, radi)
 {
 	var la = new LAYER(
 		'seleccio_puntradi', 
@@ -142,8 +147,11 @@ CAPES_GBIF.prototype.set_layer_selection_puntradi	= function(coordenades, radi)
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
 					'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
-					//TODO --> afegir la consulta espacial per punt/radi
+					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
+					//'q': '*:*',
+					'lat':coordenades[1],
+					'lon':coordenades[0],
+					'radius': radi
 				}
 			})
 		})

@@ -9,7 +9,7 @@ function mapa_observacions(acronim)
 	//MAPA
 	var map = new ol.Map(
 	{
-		target: 'map',
+		target: 'mapobs',
 		view: new ol.View({
 			projection: 'EPSG:3857',
 			center: ol.proj.fromLonLat(bioxpn_config.get_centermap_lonlat(acronim)),
@@ -32,10 +32,12 @@ function mapa_observacions(acronim)
 	map.on("click", function(evt){gbif_consulta_observacions(map, gbif, evt)}); 
 
 
-	map.addLayer(icc.get_tilelayer('topogris'));
-	//map.addLayer(gbif.get_tilelayer('observacions'));
-	map.addLayer(diba.get_tilelayer('limitsxpn'));
+	addLayer_check(map, icc.get_tilelayer('topogris'));
+	addLayer_check(map, gbif.get_tilelayer('observacions'));
+	addLayer_check(map, diba.get_tilelayer('limitsxpn'));
 	
+	//Afegeixo la cerca per taxon_name
+	search_taxon_name(acronim, map, gbif);
 	
 };//Fi de mapa_observacions()
 
@@ -73,23 +75,28 @@ function gbif_consulta_observacions(map, gbif, evt)
 		var coord = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
 		console.log('Click on: '+coord[0]+' ,'+coord[1]);
 		
+		//Elimino la capa de seleccions prèvies
+		removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
+		
 		//Preguntar al servidor quines observacions hi ha en el click
 		
 		//Consulta asíncrona, si torna resultats, fer:
 		
 		//Mostrar la capa amb el punt(s) seleccionat(s)
-		set layer seleccio_punt_radi
-		map.addLayer(gbif.get_tilelayer('seleccio_puntradi'));
+		gbif.set_layer_selection_puntradi(coord, 1);
+		
+		addLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
 
 		//Mostrar el popup
-		mostrar_popup(map, evt.coordinate);
+		mostrar_popup(map, gbif, evt.coordinate);
 };
 
-function mostrar_popup(map, coordenades)
+function mostrar_popup(map, gbif, coordenades)
 {
 	//Exemple: http://jsfiddle.net/ro1ptr0k/26/
 	
 	//Demano els identificadors del POPUP del DOM
+	//TODO jquery
 	var container = document.getElementById('popup');
 	var content = document.getElementById('popup-content');
 	var closer = document.getElementById('popup-closer');
@@ -100,7 +107,7 @@ function mostrar_popup(map, coordenades)
 	*/
 	closer.onclick = function() 
 	{
-		map.removeLayer(gbif.get_tilelayer('seleccio_puntradi'));
+		removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
 		overlay.setPosition(undefined);
 		closer.blur();
 		return false;
@@ -125,3 +132,24 @@ function mostrar_popup(map, coordenades)
 	overlay.setPosition(coordenades);
 	
 }; //Fi de mostrar_popup
+
+
+//Check if layer exist in map, return true/false
+function map_layer_check(map, layer)
+{
+		if(!_.isUndefined(_.find(map.getLayers().getArray(), function(d){return d == layer;})))
+		{return true;}
+		else{return false;}
+}; //Fi de map_layer_check
+
+function addLayer_check(map, layer)
+{
+	if(!map_layer_check(map, layer))
+	{map.addLayer(layer);}
+}; //Fi de addLayer_check(map, layer)
+
+function removeLayer_check(map, layer)
+{
+	if(map_layer_check(map, layer))
+	{map.removeLayer(layer);}
+}; //Fi de removeLayer_check
