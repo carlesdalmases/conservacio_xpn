@@ -146,7 +146,7 @@ CAPES_GBIF.prototype.set_layer_selection_puntradi = function(coordenades, radi)
 					'OUTLINE': true,
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
-					'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
+					'ENV': 'color:33ffff;name:circle;size:3;opacity:1;',
 					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
 					//'q': '*:*',
 					'lat':coordenades[1],

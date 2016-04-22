@@ -9,7 +9,7 @@
 /* POPUP */
 .ol-popup {
 position: absolute;
-background-color: white;
+background-color: #FFF9EC;
 -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
 filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
 padding: 15px;
@@ -58,4 +58,13 @@ content: "X";
     /*width:100px;*/
     /*height:200px;*/ 
     /*background-image: url("YOUR_IMAGE.jpeg");*/
+}
+
+.ol-mouse-position 
+{
+	right: 3em;
+	color: #fff;
+	background-color: rgba(0,60,136,.5);
+	padding: 2px 10px;
+	border-radius: 5px;
 }

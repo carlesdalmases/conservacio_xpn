@@ -21,6 +21,8 @@ function BIOXPN_CONFIG()
 
 	this.ALAserver = 'http://datos.gbif.es';
 
+	//Radi de la consulta per localització sobre el mapa segons el nivell de zoom
+	this.zoomradius = new ZOOMRADIUS();
 
 }; //Fi de BIOXPN_CONFIG()
 
@@ -105,11 +107,35 @@ BIOXPN_CONFIG.prototype.get_URL_observacions_assertions_missing = function(acron
 	return this.get_URL_acronim_facet(acronim, 'assertions_missing');
 };
 
-
+//Retorna la URL per obtenir un facet determinat dins de l'acronim
+//La llista de facets disponibles: http://datos.gbif.es/biocache-service/index/fields
 BIOXPN_CONFIG.prototype.get_URL_acronim_facet = function(acronim, facet) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets='+facet+'&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
 };
+
+//Retorna la URL per obtenir un facet determinat en el punt  LAT/LON amb un radi determinat
+//La llista de facets disponibles: http://datos.gbif.es/biocache-service/index/fields
+BIOXPN_CONFIG.prototype.get_URL_puntradi_facet = function(facet, coordenades, radi) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/search.json?q=*:*&facets='+facet+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=1';
+};
+
+//Retorna la URL per saber si una observació concreta (id) es troba dins de l'àmbit de 'acrònim'
+BIOXPN_CONFIG.prototype.get_URL_acronim_obsID = function(acronim, obs_id) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/search.json?fq=id:'+obs_id+'&q=qid:'+this.get_qid(acronim)+'&facet=off&pageSize=0';
+};
+
+//Retorna la URL per saber el número de taxons en un latlon_radi
+BIOXPN_CONFIG.prototype.get_URL_numtaxa_puntradi = function(coordenades, radi) 
+{
+	return this.ALAserver+'/biocache-service/occurrence/facets.json?q=*:*&qc='+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&facets=taxon_name&flimit=0';
+};
+
+
+
+
 
 //Retorna la URL per descarregar una checklist
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
@@ -159,3 +185,49 @@ XPN.prototype.get_nomoficial = function(){return this.nom_oficial;};
 XPN.prototype.get_centermaplonlat = function(){return this.centermap_lonlat;};
 XPN.prototype.get_zoominitial = function(){return this.zoom_initial;};
 
+
+
+function ZR(zoom, radius)
+{
+	this.zoom = zoom;
+	this.radius = radius;
+};//Fi de ZR
+ZR.prototype.get_zoom = function (){return this.zoom;};
+ZR.prototype.get_radius = function (){return this.radius;};
+
+
+function ZOOMRADIUS()
+{
+	this.zoom_radius=[];
+	//Copiat del codi original del 'generic-hub'
+	this.zoom_radius.push(new ZR(0,800));
+	this.zoom_radius.push(new ZR(1,400));
+	this.zoom_radius.push(new ZR(2,200));
+	this.zoom_radius.push(new ZR(3,100));
+	this.zoom_radius.push(new ZR(4,50));
+	this.zoom_radius.push(new ZR(5,25));
+	this.zoom_radius.push(new ZR(6,20));
+	this.zoom_radius.push(new ZR(7,7.5));
+	this.zoom_radius.push(new ZR(8,3));
+	this.zoom_radius.push(new ZR(9,1.5));
+	this.zoom_radius.push(new ZR(10,.75));
+	this.zoom_radius.push(new ZR(11,.25));
+	this.zoom_radius.push(new ZR(12,.15));
+	this.zoom_radius.push(new ZR(13,.1));
+	this.zoom_radius.push(new ZR(14,.05));
+	this.zoom_radius.push(new ZR(15,.025));
+	this.zoom_radius.push(new ZR(16,.015));
+	this.zoom_radius.push(new ZR(17,0.0075));
+	this.zoom_radius.push(new ZR(18,0.004));
+	this.zoom_radius.push(new ZR(19,0.002));
+	this.zoom_radius.push(new ZR(20,0.001));
+};
+ZOOMRADIUS.prototype.get_radius = function(zoom)
+{
+	return _.find(this.zoom_radius, function(d){return d.zoom == zoom}).get_radius();	
+}
+
+ZOOMRADIUS.prototype.get_zoom = function(radius)
+{
+	return _.find(this.zoom_radius, function(d){return d.radius == radius}).get_zoom();	
+}

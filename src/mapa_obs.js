@@ -27,10 +27,10 @@ function mapa_observacions(acronim)
 	_.each(controls_list.getControls(), function(d){map.addControl(d)});
 
 	//TODO fixar el PAN sobre el mapa a mapextent.
+	
 
 	//Consulta sobre el mapa
-	map.on("click", function(evt){gbif_consulta_observacions(map, gbif, evt)}); 
-
+	map.on("click", function(evt){gbif_consulta_observacions(acronim, map, gbif, evt)}); 
 
 	addLayer_check(map, icc.get_tilelayer('topogris'));
 	addLayer_check(map, gbif.get_tilelayer('observacions'));
@@ -53,6 +53,7 @@ function CONTROLS(mapextent)
 
 	new ol.control.MousePosition(
 	{
+		undefinedHTML: '',
 		projection: ol.proj.get('EPSG:4326'),
 		units: 'degrees',
 		coordinateFormat: function(coordinate) {return ol.coordinate.format(coordinate, '{y}, {x}', 4)},
@@ -61,7 +62,7 @@ function CONTROLS(mapextent)
 	new ol.control.ZoomToExtent({extent: mapextent}),
 	new ol.control.Zoom()
 
-	//new ol.control.ZoomSlider()
+
 	];
 };
 
@@ -70,66 +71,114 @@ CONTROLS.prototype.getControls = function()
 	return this.c;	
 };
 
-function gbif_consulta_observacions(map, gbif, evt)
+function gbif_consulta_observacions(acronim, map, gbif, evt)
 {
 		var coord = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-		console.log('Click on: '+coord[0]+' ,'+coord[1]);
+		var r = bioxpn_config.zoomradius.get_radius(map.getView().getZoom());
 		
 		//Elimino la capa de seleccions prèvies
 		removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
 		
-		//Preguntar al servidor quines observacions hi ha en el click
-		
-		//Consulta asíncrona, si torna resultats, fer:
-		
-		//Mostrar la capa amb el punt(s) seleccionat(s)
-		gbif.set_layer_selection_puntradi(coord, 1);
-		
-		addLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
+		//Determinar si el click a dins o a fora de 'acrònim'
+		query_server(bioxpn_config.get_URL_puntradi_facet('id',coord,r)).then
+		(
+			function(df)
+			{
+				var num_obs = df.totalRecords;
+				var num_taxa;
+				
+				//Si no ha trobat res, acabo.
+				if(!num_obs){return false;}
+				
+				//Dels resultats, només 1 registre del facet, l'utilitzo per preguntar si està dins de l'àmbit 'acrònim'
+				query_server(bioxpn_config.get_URL_acronim_obsID(acronim,df.facetResults[0].fieldResult[0].label)).then
+				(
+					function(df)
+					{
+						//Si no tornen registres, estic fòra de l'àmbit.
+						if(!df.totalRecords){return false;}
 
-		//Mostrar el popup
-		mostrar_popup(map, gbif, evt.coordinate);
+						//a dins de l'àmbit
+						else
+						{
+							//Mostrar la capa amb el punt(s) seleccionat(s)
+							gbif.set_layer_selection_puntradi(coord, r);
+							addLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
+							
+							//Demanar el número de taxons en el punt latlon_radi
+							query_server(bioxpn_config.get_URL_numtaxa_puntradi(coord,r)).then
+							(
+								function(df)
+								{
+									num_taxa = df[0].count;
+
+									//Mostrar el popup
+									mostrar_popup(map, gbif, evt.coordinate, coord, num_obs, num_taxa);
+								}
+							);
+						};
+					}
+				);
+			}
+		);					
+		
 };
 
-function mostrar_popup(map, gbif, coordenades)
+function mostrar_popup(map, gbif, coord_view, coord_map, num_obs, num_taxa)
 {
 	//Exemple: http://jsfiddle.net/ro1ptr0k/26/
 	
-	//Demano els identificadors del POPUP del DOM
-	//TODO jquery
-	var container = document.getElementById('popup');
-	var content = document.getElementById('popup-content');
-	var closer = document.getElementById('popup-closer');
-		
-	/**
-	* Add a click handler to hide the popup.
-	* @return {boolean} Don't follow the href.
-	*/
-	closer.onclick = function() 
-	{
-		removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
-		overlay.setPosition(undefined);
-		closer.blur();
-		return false;
-	};
-
-	//Contigunt
-	content.innerHTML = '<p>HOLA:</p><code>';
-
-	/*Contingut:
-		* Posició lat/lon del click
-		* Número d'observacions
-		* Número de tàxons
-		* Botó Descarregar llista tàxons
-		* Botó Descarregar llista observacions
-	*/
+	$('#popup').empty();
 	
+	$newpopupcloser = $('<a/>')
+					 .attr('href', '#')
+					 .attr('id', 'popup-closer')
+					 .addClass('ol-popup-closer')
+					 .on('click', function(){
+										removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
+										overlay.setPosition(undefined);
+										$('#popup-closer').blur();
+										return false;		
+										});
+	$('#popup').append($newpopupcloser);
+	
+
+
+
+	//Afegeixo el contingut
+	$newpopupcontent = $('<div/>');
+	$('#popup').append($newpopupcontent);
+
+	// Afegeixo les coordenades
+	/*
+	$newCoord = $('<span/>')
+				.text(coord_map[1]+','+coord_map[0])
+	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newCoord));
+	*/
+
+	//Botó Observacions
+	$newButton_obs = $('<button/>')
+				.attr('type', 'button')
+				.addClass('btn btn-primary btn-xs')
+				.text(num_obs+' observacions ');
+	$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
+	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_obs));
+	
+	//Botó taxa
+	$newButton_taxa = $('<button/>')
+				.attr('type', 'button')
+				.addClass('btn btn-primary btn-xs')
+				.text(num_taxa+' taxons ');
+	$($newButton_taxa).append('<span class=\'glyphicon glyphicon-download\'></span>');
+
+	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_taxa));
+
 	/**
 	* Create an overlay to anchor the popup to the map.
 	*/
-	var overlay = new ol.Overlay({element: container});
+	var overlay = new ol.Overlay({element: $('#popup')[0]});
 	map.addOverlay(overlay);
-	overlay.setPosition(coordenades);
+	overlay.setPosition(coord_view);
 	
 }; //Fi de mostrar_popup
 

@@ -6,6 +6,8 @@ function search_taxon_name(acronim, map, gbif)
 	(
 		function(df)
 		{
+			if(!df.totalRecords){return;};
+			
 			taxonnamelist = df.facetResults[0].fieldResult;
 			construir_search_button();
 
