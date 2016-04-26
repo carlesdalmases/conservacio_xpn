@@ -122,7 +122,7 @@ CAPES_GBIF.prototype.set_layer_selection_taxon = function(taxon_name)
 		this.gbif_layers.push(la);
 	}
 	
-	console.log(this.gbif_layers);
+	//console.log(this.gbif_layers);
 };
 
 CAPES_GBIF.prototype.set_layer_selection_puntradi = function(coordenades, radi)

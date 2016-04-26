@@ -113,7 +113,7 @@ function gbif_consulta_observacions(acronim, map, gbif, evt)
 									num_taxa = df[0].count;
 
 									//Mostrar el popup
-									mostrar_popup(map, gbif, evt.coordinate, coord, num_obs, num_taxa);
+									mostrar_popup(acronim, map, gbif, evt.coordinate, coord, r, num_obs, num_taxa);
 								}
 							);
 						};
@@ -124,7 +124,7 @@ function gbif_consulta_observacions(acronim, map, gbif, evt)
 		
 };
 
-function mostrar_popup(map, gbif, coord_view, coord_map, num_obs, num_taxa)
+function mostrar_popup(acronim, map, gbif, coord_view, coord_map, radius, num_obs, num_taxa)
 {
 	//Exemple: http://jsfiddle.net/ro1ptr0k/26/
 	
@@ -168,10 +168,14 @@ function mostrar_popup(map, gbif, coord_view, coord_map, num_obs, num_taxa)
 	$newButton_taxa = $('<button/>')
 				.attr('type', 'button')
 				.addClass('btn btn-primary btn-xs')
-				.text(num_taxa+' taxons ');
+				.text(num_taxa+' taxons ')
+				.on('click', function(){downloadfile(bioxpn_config.get_URL_checlistkdownload_puntradi(coord_map,radius))});
+	
 	$($newButton_taxa).append('<span class=\'glyphicon glyphicon-download\'></span>');
-
 	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_taxa));
+
+
+
 
 	/**
 	* Create an overlay to anchor the popup to the map.
@@ -202,3 +206,17 @@ function removeLayer_check(map, layer)
 	if(map_layer_check(map, layer))
 	{map.removeLayer(layer);}
 }; //Fi de removeLayer_check
+
+function downloadfile(url)
+{
+	//console.log(url);
+	
+	$df = $('<a/>')
+		  .attr('href', url);
+		  //.attr('download', 'taxonname_list.csv');
+		  //.on('click', function(){$(this).attr("href", url);});
+	
+	//$df.trigger('mousedown');
+	//$($df).mousedown();
+	$($df)[0].click();
+}; //Fi de downloadfile(url)

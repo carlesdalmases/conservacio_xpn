@@ -14,6 +14,13 @@ function search_taxon_name(acronim, map, gbif)
 			//Afegeixo les funcions als inputs
 			$('#search_black').on('keydown', function(event)
 			{
+				//Si el camp de cerca està buit
+				if(this.value =='')
+				{
+					$('#search_black').trigger('input');
+					return;
+				}
+				
 				//ENTER KEY
 				if (event.which == 13)
 				{
@@ -55,15 +62,20 @@ function search_taxon_name(acronim, map, gbif)
 			{
 				if(!this.value =='')
 				{
+					//Si hi ha seleccions anteriors, les elimino
+					removeLayer_check(map, gbif.get_tilelayer('seleccio_taxon'));
+					
 					//Omplir el value de search_grey
 					value_regexp = new RegExp('^'+this.value+'.*$', 'i');
 					value_search = _.find(taxonnamelist, function(d){return value_regexp.test(d.label);});
+					//S'ha trobat una coincidència
 					if(!_.isUndefined(value_search))
 					{
 						//La primera lletra en majúscules
 						this.value = this.value.CapitalizeFirstLetter();
 						$('#search_grey').val(value_search.label);
 					}
+					//No s'ha trobat cap coincidència
 					else
 					{
 						$('#search_grey').val('');
@@ -86,10 +98,15 @@ String.prototype.CapitalizeFirstLetter = function() {
 
 function construir_search_button()
 {	
+		//Resposta al click al butó 'lupa'
+		e = $.Event('keydown');
+		e.which= 13; // enter
+		
 		//Construir el control de tipus input
 		$newbutton = $('<button/>')
 					.addClass('btn btn-default')
 					.attr('type', 'button')
+					.on('click', function(){$('#search_black').trigger(e)})
 					.html('<span class="glyphicon glyphicon-search aria-hidden="true"></span>');
 					
 		$newspan = $('<span />')

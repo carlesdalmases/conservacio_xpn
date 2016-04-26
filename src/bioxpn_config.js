@@ -133,15 +133,19 @@ BIOXPN_CONFIG.prototype.get_URL_numtaxa_puntradi = function(coordenades, radi)
 	return this.ALAserver+'/biocache-service/occurrence/facets.json?q=*:*&qc='+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&facets=taxon_name&flimit=0';
 };
 
-
-
-
-
-//Retorna la URL per descarregar una checklist
+//Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
 };
+
+//Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
+BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenades,radi) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&facets=taxon_name&count=false&fsort=index&dir=asc&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi;
+};
+
+
 
 //Retorna la URL del servidor de mapes WMS
 BIOXPN_CONFIG.prototype.get_URL_WMS = function(acronim) 
