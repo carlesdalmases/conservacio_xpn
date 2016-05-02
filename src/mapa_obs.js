@@ -73,6 +73,9 @@ CONTROLS.prototype.getControls = function()
 
 function gbif_consulta_observacions(acronim, map, gbif, evt)
 {
+		//Si hi ha una capa overlay al mapa (resultat d'una consulta prèvia), no faig res
+		if(map.getOverlays().getArray().length){console.log('No');return;};
+		
 		var coord = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
 		var r = bioxpn_config.zoomradius.get_radius(map.getView().getZoom());
 		
@@ -113,7 +116,7 @@ function gbif_consulta_observacions(acronim, map, gbif, evt)
 									num_taxa = df[0].count;
 
 									//Mostrar el popup
-									mostrar_popup(acronim, map, gbif, evt.coordinate, coord, r, num_obs, num_taxa);
+									mostrar_popup(map, gbif, evt.coordinate, coord, r, num_obs, num_taxa);
 								}
 							);
 						};
@@ -124,11 +127,16 @@ function gbif_consulta_observacions(acronim, map, gbif, evt)
 		
 };
 
-function mostrar_popup(acronim, map, gbif, coord_view, coord_map, radius, num_obs, num_taxa)
+function mostrar_popup(map, gbif, coord_view, coord_map, radius, num_obs, num_taxa)
 {
 	//Exemple: http://jsfiddle.net/ro1ptr0k/26/
+
+	var overlay;
 	
-	$('#popup').empty();
+	//Creo l'element DIV id=popup
+	$('#mapobs').append('<div id="popup" class="ol-popup"></div>');
+	
+	//$('#popup').empty();
 	
 	$newpopupcloser = $('<a/>')
 					 .attr('href', '#')
@@ -136,53 +144,81 @@ function mostrar_popup(acronim, map, gbif, coord_view, coord_map, radius, num_ob
 					 .addClass('ol-popup-closer')
 					 .on('click', function(){
 										removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
-										overlay.setPosition(undefined);
+										map.removeOverlay(overlay);
+										//overlay.setPosition(undefined);
 										$('#popup-closer').blur();
 										return false;		
 										});
 	$('#popup').append($newpopupcloser);
-	
-
-
 
 	//Afegeixo el contingut
 	$newpopupcontent = $('<div/>');
 	$('#popup').append($newpopupcontent);
 
-	// Afegeixo les coordenades
-	/*
-	$newCoord = $('<span/>')
-				.text(coord_map[1]+','+coord_map[0])
-	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newCoord));
-	*/
+	//Si NO s'ha buscat un taxon_name concret
+	if(!map_layer_check(map, gbif.get_tilelayer('seleccio_taxon')))
+	{
+		//Botó Observacions
+		$newButton_obs = $('<button/>')
+					.attr('type', 'button')
+					.addClass('btn btn-primary btn-xs')
+					.text(num_obs+' observacions ')
+					.on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_puntradi(coord_map,radius))});
+					
+		$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
+		$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_obs));
+		
+		//Botó taxa
+		$newButton_taxa = $('<button/>')
+					.attr('type', 'button')
+					.addClass('btn btn-primary btn-xs')
+					.text(num_taxa+' taxons ')
+					.on('click', function(){downloadfile(bioxpn_config.get_URL_checlistkdownload_puntradi(coord_map,radius))});
+		
+		$($newButton_taxa).append('<span class=\'glyphicon glyphicon-download\'></span>');
+		$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_taxa));
 
-	//Botó Observacions
-	$newButton_obs = $('<button/>')
-				.attr('type', 'button')
-				.addClass('btn btn-primary btn-xs')
-				.text(num_obs+' observacions ');
-	$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
-	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_obs));
-	
-	//Botó taxa
-	$newButton_taxa = $('<button/>')
-				.attr('type', 'button')
-				.addClass('btn btn-primary btn-xs')
-				.text(num_taxa+' taxons ')
-				.on('click', function(){downloadfile(bioxpn_config.get_URL_checlistkdownload_puntradi(coord_map,radius))});
-	
-	$($newButton_taxa).append('<span class=\'glyphicon glyphicon-download\'></span>');
-	$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_taxa));
+		/**
+		* Create an overlay to anchor the popup to the map.
+		*/
+		overlay = new ol.Overlay({element: $('#popup')[0]});
+		map.addOverlay(overlay);
+		overlay.setPosition(coord_view);
+	}
+	//Hi ha una cerca de taxon concret, mostro un POPUP diferent
+	else
+	{
+		var tx = $('#search_black').val();
+		var no;
+		
+		query_server(bioxpn_config.get_URL_numobs_taxonname_puntradi(tx,coord_map,radius)).then
+		(
+			function(df)
+			{
+				no=df.totalRecords;
+				
+				//Botó Observacions
+				$newButton_obs = $('<button/>')
+							.attr('type', 'button')
+							.addClass('btn btn-primary btn-xs')
+							.text(no+' observacions ')
+							.on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_taxonname_puntradi(tx,coord_map,radius))});
+		
+				$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
+				$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_obs));
+
+				/**
+				* Create an overlay to anchor the popup to the map.
+				*/
+				overlay = new ol.Overlay({element: $('#popup')[0]});
+				map.addOverlay(overlay);
+				overlay.setPosition(coord_view);
+			}
+		);
+	}
 
 
 
-
-	/**
-	* Create an overlay to anchor the popup to the map.
-	*/
-	var overlay = new ol.Overlay({element: $('#popup')[0]});
-	map.addOverlay(overlay);
-	overlay.setPosition(coord_view);
 	
 }; //Fi de mostrar_popup
 
@@ -209,14 +245,7 @@ function removeLayer_check(map, layer)
 
 function downloadfile(url)
 {
-	//console.log(url);
-	
 	$df = $('<a/>')
 		  .attr('href', url);
-		  //.attr('download', 'taxonname_list.csv');
-		  //.on('click', function(){$(this).attr("href", url);});
-	
-	//$df.trigger('mousedown');
-	//$($df).mousedown();
 	$($df)[0].click();
 }; //Fi de downloadfile(url)
