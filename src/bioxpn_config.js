@@ -139,9 +139,6 @@ BIOXPN_CONFIG.prototype.get_URL_numobs_taxonname_puntradi = function(taxon_name,
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=*:*&fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&facet=off&pageSize=0';
 };
 
-
-
-
 //Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
@@ -186,6 +183,13 @@ BIOXPN_CONFIG.prototype.get_URL_group = function(acronim, group)
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index&fq=species_group:'+group;
 
 };
+
+//Retorna la URL per obtenir la jerarquia taxònomica donat un rank, name i acronim (retorna el número d'observacions)
+BIOXPN_CONFIG.prototype.get_URL_breakdown_observacions = function(acronim, rank, r_name) 
+{
+	return this.ALAserver+'/biocache-service/breakdown.json?q=qid:'+this.get_qid(acronim)+'&rank='+rank+(_.isUndefined(r_name)?'':'&name='+r_name);
+};
+
 
 
 

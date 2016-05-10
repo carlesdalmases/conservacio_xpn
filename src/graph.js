@@ -63,6 +63,77 @@ function graph_pie_taxons_taxons(dades)
 	return graph_pie_template('taxons-body-taxons', 'per número de tàxons', dades);
 };
 
+function graph_pie_taxonomy(acronim,dades)
+{
+	
+	var taxa = _.sortBy(dades.taxa, 'count').reverse();
+
+	_.each(taxa, function(d,i)
+	{
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+	});
+
+	var params = pie_defaults();
+	params.header.title.text = 'per observacions';
+	params.data.content = taxa;
+	params.size.canvasWidth = 400;
+//	var gtaxonomy_obs = graph_pie_template('taxonomy-body-obs', 'per observacions', taxa);
+	var gtaxonomy_obs = graph_pie_params('taxonomy-body-obs', params);
+	
+	//Add onclick function --> query_server al següent nivell de la jerarquia
+	gtaxonomy_obs.options.callbacks.onClickSegment = (function(a){d3pie_taxonomy_onclick(acronim,gtaxonomy_obs,a,dades);});
+};
+
+function d3pie_taxonomy_onclick(acronim,g,a,dades)
+{
+	console.log(a);
+	query_server(bioxpn_config.get_URL_breakdown_observacions(acronim,dades.rank,a.data.label)).then
+	(
+		function(df)
+		{
+			//Deso el rank
+			dades.rank = df.rank;
+			dades.taxa = [];
+			
+			var taxa = _.sortBy(df.taxa, 'count').reverse();
+		
+			_.each(taxa, function(d,i)
+			{
+				d.value = d.count;
+				d.color = ColorLuminance(scaleColor(i), 0.2);
+			});
+			
+			g.options.header.subtitle.text = df.rank;
+			g.updateProp('data.content', taxa);
+		}
+	);
+	
+	//Mostro un botó de reset
+	if (!(document.getElementById('button_taxonomy_reset')))
+	{
+		$newbuttonreset = $('<button/>')
+						.addClass('btn btn-default')
+						.attr('id', 'button_taxonomy_reset')
+						.attr('type', 'button')
+						.attr('style', 'margin-left: 10px')
+						.on('click', function()
+									 {
+									 	//Eliminar el botó
+									 	$('#taxonomy_body_reset').empty();
+									 	//Eliminar els gràfics
+									 	g.destroy();
+									 	//Tornar a generar els gràfics
+									 	taxonomy(acronim)
+									 })
+						.html('<span>Reset</span>');
+		$('#taxonomy_body_reset').append($newbuttonreset);
+	}
+	
+	
+};//Fi de d3pie_taxonomy_onclick
+
+
 function graph_pie_sync_taxons(obs,sp)
 {
 	//obs i taxons són objectes TreeModel
@@ -367,11 +438,24 @@ function ColorLuminance(hex, lum) {
 
 function graph_pie_template(div, titol, dades)
 {	
-	return pie = new d3pie(div, 
-	{
+	var defaults = pie_defaults();
+	defaults.header.title.text = titol;
+	defaults.data.content = dades;
+
+	return pie = new d3pie(div, defaults);
+};
+
+function graph_pie_params(div, params)
+{
+	return pie = new d3pie(div, params);
+};
+
+function pie_defaults()
+{
+return	{
 		"header": {
 			"title": {
-				"text": titol,
+				"text": '',
 				"fontSize": 12,
 				"font": "open sans"
 			},
@@ -395,7 +479,7 @@ function graph_pie_template(div, titol, dades)
 				"enabled": true,
 				"label": "Altres"
 			},
-			"content": dades
+			"content": ''
 		},
 		"labels": {
 			"outer": {
@@ -440,8 +524,10 @@ function graph_pie_template(div, titol, dades)
 				"percentage": 100
 			}
 		}
-	});
+	};
 };
+
+
 
 //Gràfic de les dates de l'observacions
 function graph_bar_observacions_ocurrence_date(dades)
