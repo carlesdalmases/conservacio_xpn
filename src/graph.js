@@ -184,9 +184,9 @@ function graph_bar_fontdades(dades)
 	//Creo una escala ordinal de 20 colors
 	var scaleColor = d3.scale.category20();
 	
+	//Agafo les primeres "max_categories" categories. Les dades venen ordenades per count, desc.
+	var d_ = _.partition(dades, function(d){return _.findIndex(dades, function(x){return x.label == d.label;})<max_categories});
 
-	//Agafo les primeres "max_categories" categories
-	var d_ = (_.partition(dades, function(d,i){return i<(max_categories-1)}));
 	var da = d_[0]; // Les primeres max_categories-1 categories
 	var db = d_[1]; // La resta de categories
 	
@@ -209,7 +209,8 @@ function graph_bar_fontdades(dades)
 
 	var scaleY = d3.scale.ordinal()
 	          .rangeBands([0, height])
-	          .domain(_.pluck(da, 'label'));
+	          //.domain(_.pluck(da, 'label'));
+			  .domain(_.map(da, function(n){return n.label;}));
 
 	//Calculo l'alçada de la barra del gràfic, com una unitat de l'escala
 	var bar_height = scaleY.rangeBand();
@@ -470,8 +471,10 @@ function graph_bar_observacions_ocurrence_date(dades)
 	height = abs_height - margin.top - margin.bottom;
 
 	//Calculo els min i max dels anys
-	var year_max = _.max(dades, function(d){return d.label;});
-	var year_min = _.min(dades, function(d){return d.label;});
+//	var year_max = _.max(dades, function(d){return d.label;});
+//	var year_min = _.min(dades, function(d){return d.label;});
+	var year_max = _.maxBy(dades, function(d){return parseInt(d.label);});
+	var year_min = _.minBy(dades, function(d){return parseInt(d.label);});
 
 	//Escala X --> Ordinal !
 	var scaleX = d3.scale.ordinal()
