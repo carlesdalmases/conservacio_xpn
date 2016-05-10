@@ -32,6 +32,13 @@
 		<!-- Llibreria http://d3pie.org/ -->
 		<script type='text/javascript' src="./src/d3pie.min.js"></script>
 
+		<!-- Llibreria https://lodash.com/ -->
+		<script type='text/javascript' src="./src/lodash.min.js"></script>
+
+
+		<!-- async -->
+		<script type='text/javascript' src="./src/async-min.js"></script>
+
 		<!-- OpenLayers -->
 		<link rel="stylesheet" href="http://openlayers.org/en/v3.15.1/css/ol.css" type="text/css">
 		<link rel="stylesheet" href="css/map.css" type="text/css">
@@ -49,6 +56,10 @@
 		<link rel="stylesheet" href="./css/search.css">
 		<script type='text/javascript' src="./src/search_taxon_name.js"></script>
 
+		<!-- http://jnuno.com/tree-model-js/ -->
+		<script type='text/javascript' src="./src/TreeModel-min.js"></script>
+
+		<script type='text/javascript' src="./src/groups_query.js"></script>
 		<script type='text/javascript' src="./src/loaddata.js"></script>
 		<script type='text/javascript' src="./src/graph.js"></script>
 		<script type='text/javascript' src="./src/query_server.js"></script>
@@ -59,12 +70,20 @@
 		<div class="container-fluid">
 			<div id="intro"></div>
 			<div id="disclaimer"><span>Descarregant aquest contingut està acceptant utilitzar-lo d'acord amb la normativa de GBIF España Condiciones d'us i qualsevulgues Condicions del Proveïdor de Dades associades amb les dades descarregades. </span></div>
+			<div id="taxons" class="panel panel-default">
+				<div id="taxons-header" class="panel-heading"><h1 class="panel-title">Taxons (per grans grups)</h1></div>	
+				<div id="taxons-body" class="panel-body">
+					<div class="row">
+						<div id="taxons-body-obs" class="col-md-6"></div>	
+						<div id="taxons-body-taxons" class="col-md-6"></div>
+					</div>
+					<div class="row" id="taxons_body_reset"></div>
+				</div>
+			</div>
 			<div id="mapa_observacions" class="panel panel-default">
 				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
 				<div id="mapa-observacions-body" class="panel-body">
-					<div id="mapobs" class="map">
-						<div id="popup" class="ol-popup"></div>	
-					</div>
+					<div id="mapobs" class="map"></div>
 				</div>
 			</div>
 			<div id="mapa_densitat_observacions" class="panel panel-default">
@@ -75,7 +94,7 @@
 					</div>
 				</div>
 			</div>			
-			<div id="taxons"></div>
+
 			<div id="observacions" class="panel panel-default">
 				<div id="observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
 				<div id="observacions-body" class="panel-body">

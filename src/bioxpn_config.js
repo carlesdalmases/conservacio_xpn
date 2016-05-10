@@ -179,6 +179,15 @@ BIOXPN_CONFIG.prototype.get_URL_taxonnamelist = function(acronim)
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index'
 };
 
+//Retorna la URL per obtenir els taxons i observacions concrets per un grup i acronim
+BIOXPN_CONFIG.prototype.get_URL_group = function(acronim, group) 
+{
+	//return this.ALAserver+'/biocache-service/explore/counts/group/'+group+'?fq=qid:'+this.get_qid(acronim) --> NO funciona
+	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index&fq=species_group:'+group;
+
+};
+
+
 
 
 /* ************************************************************************** */

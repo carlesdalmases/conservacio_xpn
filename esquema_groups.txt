@@ -1,0 +1,24 @@
+	-> Biota(1) --> Observacions:  18909 Espècies: 1590
+		-> Animals(2) --> Observacions:  1043 Espècies: 170
+			-> Mammals(3) --> Observacions:  56 Espècies: 27
+			-> Birds(3) --> Observacions:  929 Espècies: 104
+			-> Reptiles(3) --> Observacions:  27 Espècies: 17
+			-> Amphibians(3) --> Observacions:  19 Espècies: 12
+			-> Fish(3) --> Observacions:  0 Espècies: 0
+			-> Molluscs(3) --> Observacions:  3 Espècies: 2
+			-> Arthropods(3) --> Observacions:  9 Espècies: 8
+				-> Crustaceans(4) --> Observacions:  0 Espècies: 0
+				-> Insects(4) --> Observacions:  7 Espècies: 6
+		-> Plants(2) --> Observacions:  17843 Espècies: 1409
+			-> Bryophytes(3) --> Observacions:  55 Espècies: 45
+			-> Gymnosperms(3) --> Observacions:  0 Espècies: 0
+			-> FernsAndAllies(3) --> Observacions:  0 Espècies: 0
+			-> Angiosperms(3) --> Observacions:  0 Espècies: 0
+				-> Monocots(4) --> Observacions:  0 Espècies: 0
+				-> Dicots(4) --> Observacions:  0 Espècies: 0
+		-> Fungi(2) --> Observacions:  3 Espècies: 3
+		-> Chromista(2) --> Observacions:  0 Espècies: 0
+		-> Protozoa(2) --> Observacions:  20 Espècies: 8
+		-> Bacteria(2) --> Observacions:  0 Espècies: 0
+		-> Algae(2) --> Observacions:  0 Espècies: 0
+		

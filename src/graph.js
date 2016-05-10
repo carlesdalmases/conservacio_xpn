@@ -28,7 +28,7 @@ function graph_pie_observacions_lifeform(dades)
 	
 	graph_pie_template('observacions-body-lifeforms', 'per formes de vida', dades);
 	
-}
+};
 
 
 // Grafic circular per observacions per regnes
@@ -43,7 +43,133 @@ function graph_pie_observacions_kingdom(dades)
 	
 	graph_pie_template('observacions-body-regnes', 'per Regnes', dades);
 
-}; //Fi de graph_tie_observacions_regnes
+}; //Fi de graph_pie_observacions_regnes
+
+function graph_pie_taxons_occurrences(dades)
+{
+	_.each(dades, function(d,i)
+	{
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+	});
+	return graph_pie_template('taxons-body-obs', 'per observacions', dades);
+};
+
+function graph_pie_taxons_taxons(dades)
+{
+	_.each(dades, function(d,i)
+	{
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+	});
+	return graph_pie_template('taxons-body-taxons', 'per número de tàxons', dades);
+};
+
+function graph_pie_sync_taxons(obs,sp)
+{
+	//obs i taxons són objectes TreeModel
+
+	//Preparo les dades pel gràfic
+	var obs_ = [];
+	var sp_ = [];
+	
+	_.each(obs.children, function(o)
+	{
+		//Només els value > 0
+		(o.model.value)?obs_.push(o.model):null;
+	});
+	
+	_.each(sp.children, function(o)
+	{
+		//Només els value > 0
+		(o.model.value)?sp_.push(o.model):null;
+	});
+	
+	var gobs = graph_pie_taxons_occurrences(_.sortBy(obs_, 'value').reverse());
+	var gtax = graph_pie_taxons_taxons(_.sortBy(sp_, 'value').reverse());
+
+	//Add onclick function
+	//gobs/gtax és un objecte de D3Pie que conté tota la informació del gràfic!
+	gobs.options.callbacks.onClickSegment = (function(a, gobj1, obj1, gobj2, obj2){d3pie_onclick(a, gobs, obs, gtax, sp);});
+	gtax.options.callbacks.onClickSegment = (function(a, gobj1, obj1, gobj2, obj2){d3pie_onclick(a, gobs, obs, gtax, sp);});
+
+};
+
+function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
+{
+	//Si no està agrupat
+	if(!a.data.isGrouped)
+	{
+		//Si tenim childrens en aquest nivell
+		if(a.data.children.length)
+		{
+			var o1_ = [];
+			var o2_ = [];
+			
+			//Busco a obj1 el node igual al node que s'ha fet click.
+			//Flatten
+			_.each(obj1.first(function(node){return node.model.group_name == a.data.group_name;}).children, function(o){
+				//Només els value > 0
+				(o.model.value)?o1_.push(o.model):null;
+			});
+			
+			_.each(obj2.first(function(node){return node.model.group_name == a.data.group_name;}).children, function(o){
+				//Només els value > 0
+				(o.model.value)?o2_.push(o.model):null;
+			});
+
+			gobj1.options.header.subtitle.text = a.data.group_text;
+			gobj2.options.header.subtitle.text = a.data.group_text;
+			
+			gobj1.updateProp('data.content', o1_);
+			gobj2.updateProp('data.content', o2_);
+			
+		}
+		//else: No faig res, no hi ha més grups per representar.
+	}
+	//Segment agrupat
+	else
+	{
+		var x_ = [];
+		var y_ = [];
+				
+		//Busco al TreeModel els nodes agrupats
+		_.each(a.data.groupedData, function(x){
+			x_.push(obj1.first(function(y){return y.model.group_name == x.group_name}).model);
+			y_.push(obj2.first(function(y){return y.model.group_name == x.group_name}).model);
+		});
+		
+		gobj1.options.header.subtitle.text = a.data.label;
+		gobj2.options.header.subtitle.text = a.data.label;
+		
+		gobj1.updateProp('data.content', x_);
+		gobj2.updateProp('data.content', y_);
+		
+	}
+	
+	//Mostro un botó de reset
+	if (!(document.getElementById('button_taxon_reset')))
+	{
+		$newbuttonreset = $('<button/>')
+						.addClass('btn btn-default')
+						.attr('id', 'button_taxon_reset')
+						.attr('type', 'button')
+						.attr('style', 'margin-left: 10px')
+						.on('click', function()
+									 {
+									 	//Eliminar el botó
+									 	$('#taxons_body_reset').empty();
+									 	//Eliminar els gràfics
+									 	gobj1.destroy();
+									 	gobj2.destroy();
+									 	//Tornar a generar els gràfics
+									 	graph_pie_sync_taxons(obj1,obj2);
+									 	
+									 })
+						.html('<span>Reset</span>');
+		$('#taxons_body_reset').append($newbuttonreset);
+	}
+};
+
+
 
 
 // Gràfic de barres horitzontals per a les fonts de dades
@@ -240,13 +366,19 @@ function ColorLuminance(hex, lum) {
 
 function graph_pie_template(div, titol, dades)
 {	
-	var pie = new d3pie(div, 
+	return pie = new d3pie(div, 
 	{
 		"header": {
 			"title": {
 				"text": titol,
 				"fontSize": 12,
 				"font": "open sans"
+			},
+			"subtitle": {
+				"text":"",
+				"color":    "#666666",
+				"fontSize": 10,
+				"font":     "open sans"
 			},
 			"location": "top-left"
 		},
