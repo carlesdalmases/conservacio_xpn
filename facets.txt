@@ -1,0 +1,81 @@
+FACETS
+NO --> basis_of_record --> Record type
+NO --> coordinate_uncertainty --> Coordinate uncertainty (in metres)
+
+elevation_d
+OK --> elevation_d_rng --> "Elevation" -->Valors continuos, sense rangs
+
+NO -->geohash
+NO -->geospatial_kosher --> Spatial validity
+
+NO --> lft
+OK --> mappable --> Cartografiables
+ERROR --> matched_name
+
+NO --> max_elevation_d
+NO --> max_elevation_d_rng
+NO --> min_elevation_d
+NO --> min_elevation_d_rng
+
+OK --> month --> Month
+
+occurrence_status_s
+
+provenance
+quad
+
+rgt
+
+state
+
+system_assertions
+
+taxonomic_issue --> Taxon identification issue
+taxonomic_kosher
+
+type_status
+
+user_assertions --> Has assertions
+
+
+
+datos.gbif.es/biocache-service/occurrences/search.json?q=*:*&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1&facets=XXX
+
+datos.gbif.es/biocache-service/occurrences/search.json?q=qid:1431515072051&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1&facets=elevation_d_rng
+
+
+
+
+
+
+ASSERTIONS
+{
+    "indexed": true,
+    "dataType": "string",
+    "stored": true,
+    "description": "Record issues",
+    "name": "assertions"
+  },
+  {
+    "indexed": true,
+    "dataType": "string",
+    "stored": true,
+    "description": "",
+    "name": "assertions_missing"
+  },
+  {
+    "indexed": true,
+    "dataType": "string",
+    "stored": true,
+    "description": "",
+    "name": "assertions_passed"
+  },
+  {
+    "indexed": true,
+    "dataType": "string",
+    "stored": true,
+    "description": "",
+    "name": "assertions_unchecked"
+   }
+}
+

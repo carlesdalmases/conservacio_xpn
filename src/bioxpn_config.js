@@ -24,6 +24,10 @@ function BIOXPN_CONFIG()
 	//Radi de la consulta per localització sobre el mapa segons el nivell de zoom
 	this.zoomradius = new ZOOMRADIUS();
 
+	this.translates = new TRANSLATES();
+	this.translates.set_lang('ca');
+	this.translates.load_translates();
+
 }; //Fi de BIOXPN_CONFIG()
 
 /* ****************************************************************************/
@@ -82,6 +86,20 @@ BIOXPN_CONFIG.prototype.get_URL_observacions_kingdom = function(acronim)
 {
 	return this.get_URL_acronim_facet(acronim, 'kingdom');
 };
+
+//Retorna la URL per obtenir els mesos en què s'ha pres les observacions i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_month = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'month');
+};
+
+//Retorna la URL per obtenir les altituds en què s'ha pres les observacions i per un acronim
+BIOXPN_CONFIG.prototype.get_URL_observacions_elevation = function(acronim) 
+{
+	return this.get_URL_acronim_facet(acronim, 'elevation_d');
+};
+
+
 
 //Retorna la URL per obtenir les observacions per formes de vida i per un acronim
 BIOXPN_CONFIG.prototype.get_URL_observacions_lifeform = function(acronim) 
@@ -190,6 +208,11 @@ BIOXPN_CONFIG.prototype.get_URL_breakdown_observacions = function(acronim, rank,
 	return this.ALAserver+'/biocache-service/breakdown.json?q=qid:'+this.get_qid(acronim)+'&rank='+rank+(_.isUndefined(r_name)?'':'&name='+r_name);
 };
 
+//Retorna la URL per obtenir la jerarquia taxònomica donat un rank, name i acronim (retorna el número d'observacions)
+BIOXPN_CONFIG.prototype.get_URL_breakdown_numtaxa = function(acronim, rank, r_name) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/search.json?fq='+rank+':'+r_name+'&q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
+};
 
 
 

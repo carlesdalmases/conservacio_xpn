@@ -8,13 +8,13 @@ function graph_pie_observacions_recordtype(dades)
 	//Preparo les dades:
 	_.each(dades, function(d,i){
 		
+		d.label = bioxpn_config.translates.get_translate(d.label);	
 		d.value = d.count;
 		d.color = ColorLuminance(scaleColor(i), 0.2);
 		});
 	
-	graph_pie_template('observacions-body-recordtype', 'per tipus de registre', dades);
+	graph_pie_template('observacions-body-recordtype', bioxpn_config.translates.get_translate('tipusderegistre'), dades);
 };
-
 
 // Grafic circular per observacions per formes de vida
 function graph_pie_observacions_lifeform(dades)
@@ -30,7 +30,6 @@ function graph_pie_observacions_lifeform(dades)
 	
 };
 
-
 // Grafic circular per observacions per regnes
 function graph_pie_observacions_kingdom(dades)
 {
@@ -45,70 +44,186 @@ function graph_pie_observacions_kingdom(dades)
 
 }; //Fi de graph_pie_observacions_regnes
 
+function graph_pie_observacions_month(dades)
+{
+	//Preparo les dades:
+	_.each(dades, function(d,i){
+		d.label = bioxpn_config.translates.get_translate('permesos_'+d.label);
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+		});
+	
+	graph_pie_template('observacions-body-month', bioxpn_config.translates.get_translate('permesos'), dades);
+
+
+
+}; //Fi de graph_pie_observacions_month
+
 function graph_pie_taxons_occurrences(dades)
 {
+	var total=0;
 	_.each(dades, function(d,i)
 	{
+		total+=d.value;
 		d.color = ColorLuminance(scaleColor(i), 0.2);
 	});
-	return graph_pie_template('taxons-body-obs', 'per observacions', dades);
+	return graph_pie_template('taxons-body-obs', bioxpn_config.translates.get_translate('occurrences')+': '+total, dades);
 };
 
 function graph_pie_taxons_taxons(dades)
 {
+	var total=0;
 	_.each(dades, function(d,i)
 	{
+		total += d.value;
 		d.color = ColorLuminance(scaleColor(i), 0.2);
 	});
-	return graph_pie_template('taxons-body-taxons', 'per número de tàxons', dades);
+	return graph_pie_template('taxons-body-taxons', bioxpn_config.translates.get_translate('numerotaxons')+': '+total, dades);
 };
 
-function graph_pie_taxonomy(acronim,dades)
+function graph_pie_taxonomy(acronim,dades,gtaxonomy_numtaxon)
 {
 	
 	var taxa = _.sortBy(dades.taxa, 'count').reverse();
 
+	var total=0;
 	_.each(taxa, function(d,i)
 	{
+		total += d.count;
 		d.value = d.count;
 		d.color = ColorLuminance(scaleColor(i), 0.2);
 	});
 
 	var params = pie_defaults();
-	params.header.title.text = 'per observacions';
+	params.header.title.text = bioxpn_config.translates.get_translate('occurrences')+': '+total;
 	params.data.content = taxa;
 	params.size.canvasWidth = 400;
-//	var gtaxonomy_obs = graph_pie_template('taxonomy-body-obs', 'per observacions', taxa);
 	var gtaxonomy_obs = graph_pie_params('taxonomy-body-obs', params);
 	
 	//Add onclick function --> query_server al següent nivell de la jerarquia
-	gtaxonomy_obs.options.callbacks.onClickSegment = (function(a){d3pie_taxonomy_onclick(acronim,gtaxonomy_obs,a,dades);});
+	gtaxonomy_obs.options.callbacks.onClickSegment = (function(a){d3pie_taxonomy_onclick(acronim,gtaxonomy_obs,a,dades,gtaxonomy_numtaxon);});
+	gtaxonomy_obs.options.callbacks.onMouseoverSegment = function(d){d3.select('body').style("cursor", "pointer");};
+	gtaxonomy_obs.options.callbacks.onMouseoutSegment = function(d){d3.select('body').style("cursor", "default");};
 };
 
-function d3pie_taxonomy_onclick(acronim,g,a,dades)
+function graph_pie_taxonomy_numtaxa(dades)
 {
-	console.log(a);
-	query_server(bioxpn_config.get_URL_breakdown_observacions(acronim,dades.rank,a.data.label)).then
-	(
-		function(df)
+	var numtaxa = _.sortBy(dades, 'value').reverse();
+
+	var total=0;
+	_.each(numtaxa, function(d,i)
+	{
+		total += d.value;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+	});
+
+	var params = pie_defaults();
+	params.header.title.text = bioxpn_config.translates.get_translate('numerotaxons')+': '+total;
+	params.data.content = numtaxa;
+	params.size.canvasWidth = 400;
+	var g = graph_pie_params('taxonomy-body-taxons', params);
+	//g.options.callbacks.onClickSegment = function(a){};
+	g.options.callbacks.onMouseoverSegment = function(d){d3.select('body').style("cursor", "not-allowed");};
+	g.options.callbacks.onMouseoutSegment = function(d){d3.select('body').style("cursor", "default");};
+	return g;
+	
+};//Fi de graph_pie_taxonomy_numtaxa
+
+function d3pie_taxonomy_onclick(acronim,g,a,dades,gtaxonomy_numtaxon)
+{
+	//Segment NO agrupat
+	if(!a.data.isGrouped)
+	{
+		//Si dades.rank <> species
+		if(dades.rank != 'species')
 		{
-			//Deso el rank
-			dades.rank = df.rank;
-			dades.taxa = [];
-			
-			var taxa = _.sortBy(df.taxa, 'count').reverse();
+			query_server(bioxpn_config.get_URL_breakdown_observacions(acronim,dades.rank,a.data.label)).then
+			(
+				function(df)
+				{
+					//En alguna ocasió, el biocache-service pot contestar, però l'Array taxa és buit!
+					if(df.taxa.length)
+					{
+						//Deso el rank
+						dades.rank = df.rank;
+						dades.taxa = [];
+						
+						var taxa = _.sortBy(df.taxa, 'count').reverse();
+					
+						var total=0;
+						_.each(taxa, function(d,i)
+						{
+							total += d.count;
+							d.value = d.count;
+							d.color = ColorLuminance(scaleColor(i), 0.2);
+						});
+						
+						g.options.header.subtitle.text = bioxpn_config.translates.get_translate(df.rank)+': '+total;
+						g.updateProp('data.content', taxa);
+						
+						/********************************************************************************************/
+						//Consulto i dibuixo el gràfic de taxonomy_numtaxa_by_rank
+						$.when(query_numtaxa_by_ranks(acronim, dades.rank, taxa)).done(function (r) 
+				 		{
+							var numtaxa = _.sortBy(r, 'value').reverse();
+							
+							var total=0;
+							_.each(numtaxa, function(d,i)
+							{
+								total += d.value;
+								d.color = ColorLuminance(scaleColor(i), 0.2);
+							});
+							
+							gtaxonomy_numtaxon.options.header.subtitle.text = bioxpn_config.translates.get_translate(df.rank)+': '+total;
+							gtaxonomy_numtaxon.updateProp('data.content', numtaxa);
+				 		});
+						/********************************************************************************************/						
+					}
+					else //--> l'Array és buit, no faig res.
+					{
+						g.options.callbacks.onMouseoverSegment = function(d){d3.select('body').style("cursor", "not-allowed");};
+					}
+				}
+			);
+		}//Si ja estem al rank espècies, no faig res més
+		else
+		{
+			g.options.callbacks.onMouseoverSegment = function(d){d3.select('body').style("cursor", "not-allowed");};
+		}
+	}
+	else //Segment agrupat
+	{
+		//No modifico el rank
+		var taxa = _.sortBy(a.data.groupedData, 'count').reverse();
+	
+		var total=0;
+		_.each(taxa, function(d,i)
+		{
+			total += d.count;
+		});
 		
-			_.each(taxa, function(d,i)
+		g.options.header.subtitle.text = bioxpn_config.translates.get_translate(dades.rank)+': '+total;
+		g.updateProp('data.content', taxa);		
+		
+		//Gràfic de taxonomy_numtaxa_by_rank
+		/********************************************************************************************/
+		//Consulto i dibuixo el gràfic de taxonomy_numtaxa_by_rank
+		$.when(query_numtaxa_by_ranks(acronim, dades.rank, taxa)).done(function (r) 
+ 		{
+			var numtaxa = _.sortBy(r, 'value').reverse();
+			
+			var total=0;
+			_.each(numtaxa, function(d,i)
 			{
-				d.value = d.count;
+				total += d.value;
 				d.color = ColorLuminance(scaleColor(i), 0.2);
 			});
 			
-			g.options.header.subtitle.text = df.rank;
-			g.updateProp('data.content', taxa);
-		}
-	);
-	
+			gtaxonomy_numtaxon.options.header.subtitle.text = bioxpn_config.translates.get_translate(dades.rank)+': '+total;
+			gtaxonomy_numtaxon.updateProp('data.content', numtaxa);
+ 		});
+		/********************************************************************************************/		
+	}
 	//Mostro un botó de reset
 	if (!(document.getElementById('button_taxonomy_reset')))
 	{
@@ -123,14 +238,13 @@ function d3pie_taxonomy_onclick(acronim,g,a,dades)
 									 	$('#taxonomy_body_reset').empty();
 									 	//Eliminar els gràfics
 									 	g.destroy();
+									 	gtaxonomy_numtaxon.destroy();
 									 	//Tornar a generar els gràfics
 									 	taxonomy(acronim)
 									 })
-						.html('<span>Reset</span>');
+						.html('<span>'+bioxpn_config.translates.get_translate('reset')+'</span>');
 		$('#taxonomy_body_reset').append($newbuttonreset);
 	}
-	
-	
 };//Fi de d3pie_taxonomy_onclick
 
 
@@ -162,6 +276,14 @@ function graph_pie_sync_taxons(obs,sp)
 	gobs.options.callbacks.onClickSegment = (function(a, gobj1, obj1, gobj2, obj2){d3pie_onclick(a, gobs, obs, gtax, sp);});
 	gtax.options.callbacks.onClickSegment = (function(a, gobj1, obj1, gobj2, obj2){d3pie_onclick(a, gobs, obs, gtax, sp);});
 
+	
+
+	gobs.options.callbacks.onMouseoverSegment = function(d){(d.data.isGrouped?d.data.groupedData.length:d.data.children.length)?d3.select('body').style("cursor", "pointer"):d3.select('body').style("cursor", "not-allowed");};
+	gobs.options.callbacks.onMouseoutSegment = function(d){d3.select('body').style("cursor", "default");};
+	gtax.options.callbacks.onMouseoverSegment = function(d){(d.data.isGrouped?d.data.groupedData.length:d.data.children.length)?d3.select('body').style("cursor", "pointer"):d3.select('body').style("cursor", "not-allowed");};
+	gtax.options.callbacks.onMouseoutSegment = function(d){d3.select('body').style("cursor", "default");};
+
+
 };
 
 function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
@@ -172,23 +294,31 @@ function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
 		//Si tenim childrens en aquest nivell
 		if(a.data.children.length)
 		{
+			var t1=0;
+			var t2=0;
+
 			var o1_ = [];
 			var o2_ = [];
 			
 			//Busco a obj1 el node igual al node que s'ha fet click.
 			//Flatten
 			_.each(obj1.first(function(node){return node.model.group_name == a.data.group_name;}).children, function(o){
+				
+				t1 += o.model.value;
 				//Només els value > 0
 				(o.model.value)?o1_.push(o.model):null;
 			});
 			
 			_.each(obj2.first(function(node){return node.model.group_name == a.data.group_name;}).children, function(o){
+				t2 += o.model.value;
+
 				//Només els value > 0
 				(o.model.value)?o2_.push(o.model):null;
 			});
 
-			gobj1.options.header.subtitle.text = a.data.group_text;
-			gobj2.options.header.subtitle.text = a.data.group_text;
+
+			gobj1.options.header.subtitle.text = a.data.group_text+': '+t1;
+			gobj2.options.header.subtitle.text = a.data.group_text+': '+t2;
 			
 			gobj1.updateProp('data.content', o1_);
 			gobj2.updateProp('data.content', o2_);
@@ -199,6 +329,9 @@ function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
 	//Segment agrupat
 	else
 	{
+		var t1 = 0;
+		var t2 = 0;
+		
 		var x_ = [];
 		var y_ = [];
 				
@@ -208,8 +341,12 @@ function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
 			y_.push(obj2.first(function(y){return y.model.group_name == x.group_name}).model);
 		});
 		
-		gobj1.options.header.subtitle.text = a.data.label;
-		gobj2.options.header.subtitle.text = a.data.label;
+		//Sumo totals
+		_.each(x_, function(a){t1+=a.value});
+		_.each(y_, function(a){t2+=a.value});
+
+		gobj1.options.header.subtitle.text = a.data.label+': '+t1;
+		gobj2.options.header.subtitle.text = a.data.label+': '+t2;
 		
 		gobj1.updateProp('data.content', x_);
 		gobj2.updateProp('data.content', y_);
@@ -235,13 +372,10 @@ function d3pie_onclick(a, gobj1, obj1, gobj2, obj2)
 									 	graph_pie_sync_taxons(obj1,obj2);
 									 	
 									 })
-						.html('<span>Reset</span>');
+						.html('<span>'+bioxpn_config.translates.get_translate('reset')+'</span>');
 		$('#taxons_body_reset').append($newbuttonreset);
 	}
 };
-
-
-
 
 // Gràfic de barres horitzontals per a les fonts de dades
 function graph_bar_fontdades(dades)
@@ -263,7 +397,7 @@ function graph_bar_fontdades(dades)
 	
 	//Afegeixo a l'array anterior la suma de la resta de categories, amb el label 'Altres'.
 	if(!_.isUndefined(db)){
-		da.push({'label': 'Altres', 'count':_.reduce(db, function(memo, d){ return memo + d.count; }, 0)});
+		da.push({'label': bioxpn_config.translates.get_translate('altres'), 'count':_.reduce(db, function(memo, d){ return memo + d.count; }, 0)});
 	}
 	
     //Margins
@@ -280,7 +414,6 @@ function graph_bar_fontdades(dades)
 
 	var scaleY = d3.scale.ordinal()
 	          .rangeBands([0, height])
-	          //.domain(_.pluck(da, 'label'));
 			  .domain(_.map(da, function(n){return n.label;}));
 
 	//Calculo l'alçada de la barra del gràfic, com una unitat de l'escala
@@ -350,7 +483,7 @@ function graph_bar_fontdades(dades)
 		.style('stroke-width', '0.5')
 		.attr('width',function(d){return scaleX(d.count)<2?2:scaleX(d.count);}) //Com a mínim farà 2px d'amplada
 		.append("svg:title")
-		.text(function(d) {return d.label+'\nObservacions: '+d.count;})
+		.text(function(d) {return d.label+'\n'+bioxpn_config.translates.get_translate('occurrences')+': '+d.count;})
 		;		
 
 	//Afegeixo text amb el % a les barres
@@ -383,7 +516,7 @@ function graph_bar_fontdades(dades)
 		.append("text")
 		.attr("text-anchor", "end")  // this makes it easy to centre the text as the transform is applied to the anchor
 		.attr("transform", "translate("+ (scaleX(scaleX.domain()[1])) +","+(height-(20/3))+")")  // centre below axis
-		.text('Observacions');
+		.text(bioxpn_config.translates.get_translate('occurrences'));
 		
 
 }; //Fi de graph_bar_fontdades
@@ -468,7 +601,7 @@ return	{
 			"location": "top-left"
 		},
 		"size": {
-			"canvasWidth": 300,
+			"canvasWidth": 400,
 			"canvasHeight": 300,
 			"pieInnerRadius": "50%",
 			"pieOuterRadius": "80%"
@@ -477,7 +610,7 @@ return	{
 			"sortOrder": "value-desc",
 			"smallSegmentGrouping": {
 				"enabled": true,
-				"label": "Altres"
+				"label": bioxpn_config.translates.get_translate('altres'),
 			},
 			"content": ''
 		},
@@ -527,8 +660,6 @@ return	{
 	};
 };
 
-
-
 //Gràfic de les dates de l'observacions
 function graph_bar_observacions_ocurrence_date(dades)
 {
@@ -549,16 +680,14 @@ function graph_bar_observacions_ocurrence_date(dades)
 
 
 	var abs_width = 900;
-	var abs_height = 200;
+	var abs_height = 250;
 	
     //Margins
-	var margin = {top: 20, right: 50, bottom: 50, left: 50},
+	var margin = {top: 50, right: 50, bottom: 50, left: 50},
 	width = abs_width - margin.left - margin.right,
 	height = abs_height - margin.top - margin.bottom;
 
 	//Calculo els min i max dels anys
-//	var year_max = _.max(dades, function(d){return d.label;});
-//	var year_min = _.min(dades, function(d){return d.label;});
 	var year_max = _.maxBy(dades, function(d){return parseInt(d.label);});
 	var year_min = _.minBy(dades, function(d){return parseInt(d.label);});
 
@@ -637,8 +766,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 		.attr("y", 6)
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
-		.text("Observacions");
-		;	
+		.text(bioxpn_config.translates.get_translate('occurrences'));
+
 
 	//Afegir eix Y Total
 	svg.append("g")
@@ -651,7 +780,7 @@ function graph_bar_observacions_ocurrence_date(dades)
 		.attr("y", -10)
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
-		.text("Acumulat");
+		.text(bioxpn_config.translates.get_translate('acumulat'));
 		;	
 
 	svg.selectAll(".bar")
@@ -662,6 +791,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 		  .attr("width", scaleX.rangeBand())
 		  .attr("y", function(d) { return scaleY(d.count); })
 		  .attr("height", function(d) { return height - scaleY(d.count); })
+		.style('fill', '#525252')
+		.style('fill-opacity', '1')
 		;
 	
 	svg.append("path")
@@ -672,6 +803,16 @@ function graph_bar_observacions_ocurrence_date(dades)
       .attr("stroke-width", 1)
       .attr("fill", "none");
       ;
+      
+	//Afegeixo el títol del gràfic
+	svg.append('g')
+		.attr('id','titol_g')
+        .append('text')
+        .attr("text-anchor", "start")  
+		.attr("transform", "translate("+ ((scaleX(scaleX.domain()[0]))-margin.left/2) +","+((scaleY(scaleY.domain()[1]))-20)+")")
+        .style("font-size", "12px")
+        .style("font-family", "open sans")
+        .text(bioxpn_config.translates.get_translate('perdates'));
 
 };
 
@@ -684,6 +825,183 @@ function graph_pie_missingCollectionDate(dades)
 		d.color = ColorLuminance(scaleColor(i), 0.2);
 		});
 	
-	graph_pie_template('qualitatdades-body', 'dates d\'observació', dades);	
+	graph_pie_template('qualitatdades-body', bioxpn_config.translates.get_translate('datesobservacio'), dades);	
+};
+
+function graph_pie_observacions_elevation(dades)
+{
+	//Amplada, en metres, del rang d'altituds
+	var delta = 100;
 	
+	//Calculo l'altitud màxima
+	var max = _.floor((parseFloat((_.maxBy(dades, function(o){return parseFloat(o.label);})).label)+delta)/delta)*delta;
+	
+	//Creo una escala de tipus Quantile
+	var scale_rangs = d3.scale.quantile()
+								.domain([0,max])
+								.range(_.range(0, max, delta));
+	
+	//Per a cada valor, calculo a quin rang correspon
+	_.each(dades, function(x){x.rank = scale_rangs(parseFloat(x.label));});
+	
+	//Faig el groupBy (sumatori) per rank, utilitzo d3.nest()
+	var data = d3.nest()
+				.key(function(d){return d.rank;})
+				.rollup(function(d){return d3.sum(d, function(g){return g.count;});})
+				.entries(dades);
+				
+	_.each(data, function(x){x.label=parseFloat(x.key);x.value=x.values});
+
+	/*****************************/
+	//Rampa de colors
+	/*****************************/
+	var colorRamp = d3.scale.quantize()
+							.domain([0,data.length])
+							.range(colorbrewer.OrRd[9]);
+
+	/*****************************/
+	//Començo a dibuixar el gràfic
+	/*****************************/
+	var abs_width = 500;
+	var abs_height = 400;
+
+    //Margins
+	var margin = {top: 20, right: 20, bottom: 50, left: 70},
+	width = abs_width - margin.left - margin.right,
+	height = abs_height - margin.top - margin.bottom;
+
+	//Escala X
+	var scaleX = d3.scale.linear()
+	          .range([0, width])
+	          .domain(d3.extent(data, function(d) {return d.value;}));
+
+	//Escala Y
+	var scaleY = d3.scale.ordinal()
+	          .rangeBands([0,height],0.1)
+			  .domain(_.map(_.orderBy(data,'label','desc'), function(n){return n.label;}));
+
+	//Calculo l'alçada de la barra del gràfic, com una unitat de l'escala
+	var bar_height = scaleY.rangeBand();
+
+	//Eix X
+	var xAxis = d3.svg.axis()
+	            .scale(scaleX)
+	            .orient("bottom")
+				.tickPadding(8)
+				.tickFormat(d3.format(".0f"));
+	//Eix Y
+	var yAxis = d3.svg.axis()
+	            .scale(scaleY)
+	            .orient("left")
+				//.tickPadding(500)
+	            .innerTickSize(0)
+	            .outerTickSize(0);
+
+
+	//Objecte grafic
+	var svg = d3.select("div#observacions-body-elevation").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+		.append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	//DIBUIX
+	//Afegir eix X
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis)
+		.selectAll("text")
+		.attr("y",10)
+		.attr("x", 9)
+		.attr("dy", ".35em")
+		.attr("transform", "rotate(50)")
+		.style("text-anchor", "start")
+		;
+
+	//Afegir eix Y				
+	svg.append("g")
+		.attr("class", "y axis")
+		//No dibuixo la línia de l'eix
+		.style({'stroke-width': '0px'})
+		.call(yAxis)
+		.selectAll('.tick text')
+		.style("text-anchor", "end")
+		//Poso la label a la base de la barra.
+		.attr("transform", "translate(0,"+(bar_height/2)+")")
+		;	
+
+	//Afegir barres
+	svg.append('g')
+		.attr('id','bars')
+		.selectAll('rect')
+		.data(data)
+		.enter()
+		.append('rect')
+		.attr('height',bar_height)
+		.attr({'x':0,'y':function(d){return scaleY(d.label);}})
+		.style('fill', function(d,i){return colorRamp(i);})
+		.style('fill-opacity', '1')
+		.style('stroke', function(d,i){return d3.rgb(colorRamp(i)).darker()})
+		.style('stroke-opacity', '1')
+		.style('stroke-width', '0.3')
+		.attr('width',function(d){return scaleX(d.value)<2?2:scaleX(d.value);}) //Com a mínim farà 2px d'amplada
+		.append("svg:title")
+		.text(function(d) {return bioxpn_config.translates.get_translate('occurrences')+': '+d.value;})
+		;		
+
+	//Afegeixo text amb el % a les barres
+	//Format amb el % i un  decimal
+	var percent = d3.format('.1%');
+	var minim_weight_bar = 30;
+	var padding_label = 3;
+	var total_count = _.reduce(data, function(memo, d){ return memo + d.value; }, 0);
+	svg.append('g')
+		.attr('id','text_bars')
+		.selectAll('text')
+		.data(data)
+		.enter()
+		.append('text')
+		//Posició del text
+		.attr({'x':function(d){return scaleX(d.value)+(scaleX(d.value)<minim_weight_bar?padding_label:padding_label*-1);}, 'y':function(d){return scaleY(d.label)+(bar_height/2);}})
+		//A dins o a fora de la barra
+		.style('text-anchor', function(d){return scaleX(d.value)<minim_weight_bar?'start':'end';}) 
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
+		// Make it a little transparent to tone down the black
+		.style("opacity", 0.8)
+		// Format the number, calculo el tant per cent sumant tots els valors presents a da
+		.text(function(d){return (d.value/total_count)< 0.005 ?'':percent(d.value/total_count);})
+		;
+		
+	//Afegeixo el títol de l'eix X
+	svg.append('g')
+		.attr('id','titol_x')
+		.append("text")
+		.attr("text-anchor", "end")  // this makes it easy to centre the text as the transform is applied to the anchor
+		.attr("transform", "translate("+ (scaleX(scaleX.domain()[1])) +","+(height-(20/3))+")")  // centre below axis
+		.text(bioxpn_config.translates.get_translate('occurrences'));
+
+	//Afegeixo el títol de l'eix Y
+	svg.append('g')
+		.attr('id','titol_y')
+		.append("text")
+		.attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+		.attr("transform", "translate("+(scaleX(scaleX.domain()[0])-30) +","+(height/2)+") rotate(-90)")  
+		.text(bioxpn_config.translates.get_translate('metres'));
+
+
+
+	//Afegeixo el títol del gràfic
+	svg.append('g')
+		.attr('id','titol_g')
+        .append('text')
+        .attr("text-anchor", "start")  
+		.attr("transform", "translate("+ ((scaleX(scaleX.domain()[0]))-margin.left/2) +","+((scaleY(scaleY.domain()[0]))-10)+")")
+        .style("font-size", "12px")
+        .style("font-family", "open sans")
+        .text(bioxpn_config.translates.get_translate('peraltitud'));
+	/*****************************/
+	
+
 };

@@ -58,10 +58,13 @@
 		<!-- http://jnuno.com/tree-model-js/ -->
 		<script type='text/javascript' src="./src/TreeModel-min.js"></script>
 
+		<script type='text/javascript' src="./src/translate.js"></script>
 		<script type='text/javascript' src="./src/groups_query.js"></script>
+		<script type='text/javascript' src="./src/query_numtaxa_by_rank.js"></script>
 		<script type='text/javascript' src="./src/loaddata.js"></script>
 		<script type='text/javascript' src="./src/graph.js"></script>
 		<script type='text/javascript' src="./src/query_server.js"></script>
+		<script type='text/javascript' src="./src/colorbrewer.js"></script>
 		<script type='text/javascript' src="./src/main_.js"></script>
 	</head>
   
@@ -69,19 +72,9 @@
 		<div class="container-fluid">
 			<div id="intro"></div>
 			<div id="disclaimer"><span>Descarregant aquest contingut està acceptant utilitzar-lo d'acord amb la normativa de GBIF España Condiciones d'us i qualsevulgues Condicions del Proveïdor de Dades associades amb les dades descarregades. </span></div>
-			<div id="taxons" class="panel panel-default">
-				<div id="taxons-header" class="panel-heading"><h1 class="panel-title">Taxons (per grans grups)</h1></div>	
-				<div id="taxons-body" class="panel-body">
-					<div class="row">
-						<div id="taxons-body-obs" class="col-md-6"></div>	
-						<div id="taxons-body-taxons" class="col-md-6"></div>
-					</div>
-					<div class="row" id="taxons_body_reset"></div>
-				</div>
-			</div>
-			
+
 			<div id="taxonomy" class="panel panel-default">
-				<div id="taxonomy-header" class="panel-heading"><h1 class="panel-title">Jerarquia taxonòmica</h1></div>	
+				<div id="taxonomy-header" class="panel-heading"></div>	
 				<div id="taxonomy-body" class="panel-body">
 					<div class="row">
 						<div id="taxonomy-body-obs" class="col-md-6"></div>	
@@ -90,8 +83,18 @@
 					<div class="row" id="taxonomy_body_reset"></div>
 				</div>
 			</div>			
-			
-			
+
+
+			<div id="taxons" class="panel panel-default">
+				<div id="taxons-header" class="panel-heading"></div>	
+				<div id="taxons-body" class="panel-body">
+					<div class="row">
+						<div id="taxons-body-obs" class="col-md-6"></div>	
+						<div id="taxons-body-taxons" class="col-md-6"></div>
+					</div>
+					<div class="row" id="taxons_body_reset"></div>
+				</div>
+			</div>
 			
 			<div id="mapa_observacions" class="panel panel-default">
 				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
@@ -110,17 +113,20 @@
 
 			<div id="observacions" class="panel panel-default">
 				<div id="observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
+
 				<div id="observacions-body" class="panel-body">
 					<div class="row">
-						<div id="observacions-body-regnes" class="col-md-4"></div>	
-						<div id="observacions-body-lifeforms" class="col-md-4"></div>
-						<div id="observacions-body-recordtype" class="col-md-4"></div>
+						<div id="observacions-body-elevation" class="col-md-6 col-md-middle"></div>
+						<div class="col-md-6">
+							<div id="observacions-body-recordtype" class="row"></div>
+							<div id="observacions-body-month" class="row"></div>	
+						</div>
 					</div>
-					<div id="observacions_ocurrence_date"></div>	
+					<div class="row" id="observacions_ocurrence_date"></div>	
 				</div>
 			</div>
 			<div id="qualitatdades" class="panel panel-default">
-				<div id="qualitatdades-header" class="panel-heading"><h1 class="panel-title">Qualitat de les dades</h1></div>	
+				<div id="qualitatdades-header" class="panel-heading"></div>	
 				<div id="qualitatdades-body" class="panel-body"></div>	
 			</div>			
 			<div id="fontsdades" class="panel panel-default">
