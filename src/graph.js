@@ -501,7 +501,8 @@ function graph_bar_fontdades(dades)
 		//Posició del text
 		.attr({'x':function(d){return scaleX(d.count)+(scaleX(d.count)<minim_weight_bar?padding_label:padding_label*-1);}, 'y':function(d){return scaleY(d.label)+(bar_height/2);}})
 		//A dins o a fora de la barra
-		.style('text-anchor', function(d){return scaleX(d.count)<minim_weight_bar?'start':'end';}) 
+		.style('text-anchor', function(d){return scaleX(d.count)<minim_weight_bar?'start':'end';})
+		.style('alignment-baseline', 'middle') 
 		.style("font-size", "10px")
 		.style("font-family", "sans-serif")
 		// Make it a little transparent to tone down the black
@@ -816,19 +817,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 
 };
 
-function graph_pie_missingCollectionDate(dades)
-{
-	//Preparo les dades:
-	_.each(dades, function(d,i){
-		
-		d.value = d.count;
-		d.color = ColorLuminance(scaleColor(i), 0.2);
-		});
-	
-	graph_pie_template('qualitatdades-body', bioxpn_config.translates.get_translate('datesobservacio'), dades);	
-};
 
-function graph_pie_observacions_elevation(dades)
+function graph_bar_observacions_elevation(dades)
 {
 	//Amplada, en metres, del rang d'altituds
 	var delta = 100;
@@ -966,6 +956,7 @@ function graph_pie_observacions_elevation(dades)
 		.attr({'x':function(d){return scaleX(d.value)+(scaleX(d.value)<minim_weight_bar?padding_label:padding_label*-1);}, 'y':function(d){return scaleY(d.label)+(bar_height/2);}})
 		//A dins o a fora de la barra
 		.style('text-anchor', function(d){return scaleX(d.value)<minim_weight_bar?'start':'end';}) 
+		.style('alignment-baseline', 'middle')
 		.style("font-size", "10px")
 		.style("font-family", "sans-serif")
 		// Make it a little transparent to tone down the black
@@ -1003,5 +994,69 @@ function graph_pie_observacions_elevation(dades)
         .text(bioxpn_config.translates.get_translate('peraltitud'));
 	/*****************************/
 	
+
+};
+
+
+/* Missing */
+function graph_pie_missingCollectionDate(dades)
+{
+	//Preparo les dades:
+	_.each(dades, function(d,i){
+		
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+		});
+	var params = pie_defaults();
+	params.header.title.text = bioxpn_config.translates.get_translate('datesobservacio');
+	params.data.content = dades;
+	params.data.smallSegmentGrouping.enabled=false;
+	graph_pie_params('qualitatdades-body-missingCollectionDate', params);
+};
+
+
+function graph_pie_locationNotSupplied(dades)
+{
+	//Preparo les dades:
+	_.each(dades, function(d,i){
+		
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+		});
+	var params = pie_defaults();
+	params.header.title.text = bioxpn_config.translates.get_translate('localitzacio');
+	params.data.content = dades;
+	params.data.smallSegmentGrouping.enabled=false;
+	graph_pie_params('qualitatdades-body-locationNotSupplied', params);
+};
+
+function graph_pie_missingCoordinatePrecision(dades)
+{
+	//Preparo les dades:
+	_.each(dades, function(d,i){
+		
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+		});
+	var params = pie_defaults();
+	params.header.title.text = bioxpn_config.translates.get_translate('precissio');
+	params.data.content = dades;
+	params.data.smallSegmentGrouping.enabled=false;
+	graph_pie_params('qualitatdades-body-missingCoordinatePrecision', params);
+};
+
+function graph_pie_uncertaintyNotSpecified(dades)
+{
+	//Preparo les dades:
+	_.each(dades, function(d,i){
+		
+		d.value = d.count;
+		d.color = ColorLuminance(scaleColor(i), 0.2);
+		});
+	var params = pie_defaults();
+	params.header.title.text = bioxpn_config.translates.get_translate('incertesa');
+	params.data.content = dades;
+	params.data.smallSegmentGrouping.enabled=false;
+	graph_pie_params('qualitatdades-body-uncertaintyNotSpecified', params);
 
 };

@@ -95,21 +95,6 @@
 					<div class="row" id="taxons_body_reset"></div>
 				</div>
 			</div>
-			
-			<div id="mapa_observacions" class="panel panel-default">
-				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
-				<div id="mapa-observacions-body" class="panel-body">
-					<div id="mapobs" class="map"></div>
-				</div>
-			</div>
-			<div id="mapa_densitat_observacions" class="panel panel-default">
-				<div id="mapa-densitat-header" class="panel-heading"><h1 class="panel-title">Densitat d'observacions</h1></div>	
-				<div id="mapa-densitat-body" class="panel-body">
-					<div id="mapdens" class="map">
-						<div id="mapa-densitat-legend" class="heatmap_legend"></div>
-					</div>
-				</div>
-			</div>			
 
 			<div id="observacions" class="panel panel-default">
 				<div id="observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
@@ -125,9 +110,20 @@
 					<div class="row" id="observacions_ocurrence_date"></div>	
 				</div>
 			</div>
+
 			<div id="qualitatdades" class="panel panel-default">
 				<div id="qualitatdades-header" class="panel-heading"></div>	
-				<div id="qualitatdades-body" class="panel-body"></div>	
+				<div id="qualitatdades-body" class="panel-body">
+					<div class="row">
+						<div id="qualitatdades-body-missingCollectionDate" class="col-md-4"></div>	
+						<div id="qualitatdades-body-locationNotSupplied" class="col-md-4"></div>
+						<div id="qualitatdades-body-missingCoordinatePrecision" class="col-md-4"></div>
+					</div>					
+					<div class="row">
+						<div id="qualitatdades-body-uncertaintyNotSpecified" class="col-md-4"></div>	
+					</div>
+					
+				</div>	
 			</div>			
 			<div id="fontsdades" class="panel panel-default">
 				<div id="fontsdades-header" class="panel-heading"><h1 class="panel-title">Fonts de dades</h1></div>	
@@ -135,6 +131,21 @@
 			</div>
 			<div id="downloads"></div>
 			<div id="footer"></div>
+
+			<div id="mapa_observacions" class="panel panel-default">
+				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
+				<div id="mapa-observacions-body" class="panel-body">
+					<div id="mapobs" class="map"></div>
+				</div>
+			</div>
+			<div id="mapa_densitat_observacions" class="panel panel-default">
+				<div id="mapa-densitat-header" class="panel-heading"><h1 class="panel-title">Densitat d'observacions</h1></div>	
+				<div id="mapa-densitat-body" class="panel-body">
+					<div id="mapdens" class="map">
+						<div id="mapa-densitat-legend" class="heatmap_legend"></div>
+					</div>
+				</div>
+			</div>			
 		</div>
 
 		<script>

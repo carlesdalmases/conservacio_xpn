@@ -10,6 +10,7 @@ function mapa_observacions(acronim)
 	var map = new ol.Map(
 	{
 		target: 'mapobs',
+		interactions: ol.interaction.defaults({mouseWheelZoom:false}),
 		view: new ol.View({
 			projection: 'EPSG:3857',
 			center: ol.proj.fromLonLat(bioxpn_config.get_centermap_lonlat(acronim)),
@@ -61,8 +62,6 @@ function CONTROLS(mapextent)
 	
 	new ol.control.ZoomToExtent({extent: mapextent}),
 	new ol.control.Zoom()
-
-
 	];
 };
 
