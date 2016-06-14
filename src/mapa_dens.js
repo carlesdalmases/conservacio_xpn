@@ -1,7 +1,10 @@
 function mapa_densitat_observacions(acronim)
 {
 
-	//Inst‡ncies dels objectes amb les capes WMS 
+	//Actualitzo el t√≠tol
+	$('div#mapa-densitat-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('occurrencesdensity')+'</h1>');
+
+	//Inst√†ncies dels objectes amb les capes WMS 
 	var icc = new CAPES_ICC();
 	var diba = new CAPES_DIBA();
 	var gbif = new CAPES_GBIF(acronim);	
@@ -25,7 +28,7 @@ function mapa_densitat_observacions(acronim)
 	//Calculo l'extent del mapa segons la vista inicial
 	mapextent = mapdens.getView().calculateExtent(mapdens.getSize());
 
-	//Inst‡ncia de l'objecte amb la llista de controls del mapa
+	//Inst√†ncia de l'objecte amb la llista de controls del mapa
 	/*
 	var controls_list = new CONTROLS(mapextent);
 	_.each(controls_list.getControls(), function(d){mapdens.addControl(d)});

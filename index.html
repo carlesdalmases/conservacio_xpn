@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta charset="ascii">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
 	    <meta name="description" content="">
@@ -9,12 +10,12 @@
 		<link rel="icon" href="http://www.diba.cat/favicon.ico" type="image/x-icon" />
 	    
 	    <title>Biodiversitat DIBA</title>
-                    
+
 		<!-- BOOTSTRAP -->
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
 
 		<!-- JQUERY -->
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -24,133 +25,33 @@
 
 		<!-- D3.js Data-Driven Documents https://d3js.org/  -->
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-		<link rel="stylesheet" href="./css/graph.css">
-
-		<!-- UNDERSCORE  Array and object utils -->
-		<!-- <script type='text/javascript' src="http://underscorejs.org/underscore-min.js"></script> -->
 
 		<!-- LODASH  Array and object utils https://lodash.com/ -->
-		<script type='text/javascript' src="src/lodash.js"></script>
+		<script type="text/javascript" src="src/lodash.js"></script>
 
 		<!-- Llibreria http://d3pie.org/ -->
-		<script type='text/javascript' src="./src/d3pie.min.js"></script>
+		<script type="text/javascript" src="./src/d3pie.min.js"></script>
 
 		<!-- async -->
-		<script type='text/javascript' src="./src/async-min.js"></script>
+		<script type="text/javascript" src="./src/async-min.js"></script>
 
 		<!-- OpenLayers -->
-		<link rel="stylesheet" href="http://openlayers.org/en/v3.15.1/css/ol.css" type="text/css">
-		<link rel="stylesheet" href="css/map.css" type="text/css">
+		<!-- <link rel="stylesheet" type="text/css" href="http://openlayers.org/en/v3.15.1/css/ol.css"> -->
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol.css">
 		<script src="http://openlayers.org/en/v3.15.1/build/ol.js" type="text/javascript"></script>
-	
-		<script type='text/javascript' src="./src/layer.js"></script>
-		<script type='text/javascript' src="./src/mapa_layers_icc.js"></script>
-		<script type='text/javascript' src="./src/mapa_layers_diba.js"></script>
-		<script type='text/javascript' src="./src/mapa_layers_gbif.js"></script>
-
-		<script type='text/javascript' src="./src/bioxpn_config.js"></script>
-		<script type='text/javascript' src="./src/mapa_obs.js"></script>
-		<script type='text/javascript' src="./src/mapa_dens.js"></script>
-
-		<link rel="stylesheet" href="./css/search.css">
-		<script type='text/javascript' src="./src/search_taxon_name.js"></script>
 
 		<!-- http://jnuno.com/tree-model-js/ -->
-		<script type='text/javascript' src="./src/TreeModel-min.js"></script>
+		<script type="text/javascript" src="./src/TreeModel-min.js"></script>
 
-		<script type='text/javascript' src="./src/translate.js"></script>
-		<script type='text/javascript' src="./src/groups_query.js"></script>
-		<script type='text/javascript' src="./src/query_numtaxa_by_rank.js"></script>
-		<script type='text/javascript' src="./src/loaddata.js"></script>
-		<script type='text/javascript' src="./src/graph.js"></script>
-		<script type='text/javascript' src="./src/query_server.js"></script>
-		<script type='text/javascript' src="./src/colorbrewer.js"></script>
-		<script type='text/javascript' src="./src/main_.js"></script>
+		<script type="text/javascript" src="./src/biodiba.js" charset="utf-8"></script>
+		<link rel="stylesheet"  type="text/css" href="./css/biodiba.css">
+
 	</head>
   
-	<body role="document">
-		<div class="container-fluid">
-			<div id="intro"></div>
-			<div id="disclaimer"><span>Descarregant aquest contingut està acceptant utilitzar-lo d'acord amb la normativa de GBIF España Condiciones d'us i qualsevulgues Condicions del Proveïdor de Dades associades amb les dades descarregades. </span></div>
-
-			<div id="taxonomy" class="panel panel-default">
-				<div id="taxonomy-header" class="panel-heading"></div>	
-				<div id="taxonomy-body" class="panel-body">
-					<div class="row">
-						<div id="taxonomy-body-obs" class="col-md-6"></div>	
-						<div id="taxonomy-body-taxons" class="col-md-6"></div>
-					</div>
-					<div class="row" id="taxonomy_body_reset"></div>
-				</div>
-			</div>			
-
-
-			<div id="taxons" class="panel panel-default">
-				<div id="taxons-header" class="panel-heading"></div>	
-				<div id="taxons-body" class="panel-body">
-					<div class="row">
-						<div id="taxons-body-obs" class="col-md-6"></div>	
-						<div id="taxons-body-taxons" class="col-md-6"></div>
-					</div>
-					<div class="row" id="taxons_body_reset"></div>
-				</div>
-			</div>
-
-			<div id="observacions" class="panel panel-default">
-				<div id="observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
-
-				<div id="observacions-body" class="panel-body">
-					<div class="row">
-						<div id="observacions-body-elevation" class="col-md-6 col-md-middle"></div>
-						<div class="col-md-6">
-							<div id="observacions-body-recordtype" class="row"></div>
-							<div id="observacions-body-month" class="row"></div>	
-						</div>
-					</div>
-					<div class="row" id="observacions_ocurrence_date"></div>	
-				</div>
-			</div>
-
-			<div id="qualitatdades" class="panel panel-default">
-				<div id="qualitatdades-header" class="panel-heading"></div>	
-				<div id="qualitatdades-body" class="panel-body">
-					<div class="row">
-						<div id="qualitatdades-body-missingCollectionDate" class="col-md-4"></div>	
-						<div id="qualitatdades-body-locationNotSupplied" class="col-md-4"></div>
-						<div id="qualitatdades-body-missingCoordinatePrecision" class="col-md-4"></div>
-					</div>					
-					<div class="row">
-						<div id="qualitatdades-body-uncertaintyNotSpecified" class="col-md-4"></div>	
-					</div>
-					
-				</div>	
-			</div>			
-			<div id="fontsdades" class="panel panel-default">
-				<div id="fontsdades-header" class="panel-heading"><h1 class="panel-title">Fonts de dades</h1></div>	
-				<div id="fontsdades-body" class="panel-body"></div>	
-			</div>
-			<div id="downloads"></div>
-			<div id="footer"></div>
-
-			<div id="mapa_observacions" class="panel panel-default">
-				<div id="mapa-observacions-header" class="panel-heading"><h1 class="panel-title">Observacions</h1></div>	
-				<div id="mapa-observacions-body" class="panel-body">
-					<div id="mapobs" class="map"></div>
-				</div>
-			</div>
-			<div id="mapa_densitat_observacions" class="panel panel-default">
-				<div id="mapa-densitat-header" class="panel-heading"><h1 class="panel-title">Densitat d'observacions</h1></div>	
-				<div id="mapa-densitat-body" class="panel-body">
-					<div id="mapdens" class="map">
-						<div id="mapa-densitat-legend" class="heatmap_legend"></div>
-					</div>
-				</div>
-			</div>			
-		</div>
-
+	<body id="body" role="document">
 		<script>
 			$(document).ready(function(){
-				main_();
+				main_('COL');
 			});
 		</script>
   </body>

@@ -65,14 +65,14 @@ function CAPES_GBIF(acronim)
 
 };
 
-//Mètode que retorna un objecte tile indicant el nom de la capa
+//MÃ¨tode que retorna un objecte tile indicant el nom de la capa
 CAPES_GBIF.prototype.get_tilelayer = function(nom_layer)
 {
 	x = _.find(this.gbif_layers, function(d){return d.label==nom_layer;});
 	if(_.isUndefined(x)){return;} else {return x.layer_tile}; 
 };
 
-//Mètode que retorna un la URL amb el PNG de la llegenda del heatmap
+//MÃ¨tode que retorna un la URL amb el PNG de la llegenda del heatmap
 CAPES_GBIF.prototype.get_heatmap_legend = function(acronim)
 {
 	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'

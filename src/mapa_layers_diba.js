@@ -28,7 +28,7 @@ function CAPES_DIBA()
 	));
 }; //Fi de CAPES_DIBA()
 
-//Mètode que retorna un objecte tile indicant el nom de la capa
+//MÃ¨tode que retorna un objecte tile indicant el nom de la capa
 CAPES_DIBA.prototype.get_tilelayer = function(nom_layer)
 {
 	return _.find(this.diba_layers, function(d){return d.label==nom_layer;}).gettilelayer();

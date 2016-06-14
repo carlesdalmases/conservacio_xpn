@@ -1,0 +1,26 @@
+.list-group-item {
+  border-width: 0px;
+}
+
+.list-group-item-heading{
+	font-weight:bold;
+}
+
+.list-group{
+	box-shadow: none;
+}
+
+#mapobs .input-group-btn{
+	display: block;
+}
+
+#popup button{
+	text-shadow:none;
+}
+
+#popup-closer{
+	border-bottom:none;
+	color:#337ab7;
+}
+	
+	

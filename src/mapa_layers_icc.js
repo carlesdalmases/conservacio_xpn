@@ -47,7 +47,7 @@ function CAPES_ICC()
 	};
 };
 
-//Mètode que retorna un objecte tile indicant el nom de la capa
+//MÃ¨tode que retorna un objecte tile indicant el nom de la capa
 CAPES_ICC.prototype.get_tilelayer = function(nom_layer)
 {
 	return _.find(this.icc_layers, function(d){return d.label==nom_layer;}).gettilelayer();

@@ -2,12 +2,12 @@ function query_numtaxa_by_ranks(acronim, rank, ranks_names)
 {
 	var deferred = $.Deferred();
 	
-	//Construir l'array de consultes asíncrones
+	//Construir l'array de consultes asÃ­ncrones
 	var async_func = [];
 	
 	_.each(ranks_names, function(x){async_func.push(function(callback){query_numtaxa_byrank(acronim, rank, x.label, callback)});});
 
-	//Executo totes les sentències de cop
+	//Executo totes les sentÃ¨ncies de cop
 	async.parallel(async_func,function(err, results)
 	{
 		//Ja tenim totes les respostes. 

@@ -7,17 +7,17 @@ function BIOXPN_CONFIG()
 	//Array d'objectes XPN amb informació dels Parcs
 	this.xpn=[];
 	this.xpn.push(new XPN('1431515072051','SLL','Parc Natural de Sant Llorenç del Munt i l\'Obac',[1.998922,41.669510],12));
-	this.xpn.push(new XPN('1431514969375','MSY','Parc Natural del Montseny',[2.396995,41.773154],12));
-	this.xpn.push(new XPN('1431514726479','GRF','Parc del Garraf',[1.873994,41.295448],10));
-	this.xpn.push(new XPN('1431514847466','MAR','Parc de la Serralada de Marina',[2.241297,41.484169],10));
-	this.xpn.push(new XPN('1431514809219','SLI','Parc de la Serralada Litoral',[2.338874,41.542325],10));
-	this.xpn.push(new XPN('1431514928133','MOC','Parc del Montnegre i el Corredor',[2.543636,41.654674],12));
-	this.xpn.push(new XPN('1431514772466','GUI','Espai Natural de les Guilleries-Savassona',[2.390846,41.951612],10));
-	this.xpn.push(new XPN('1431514892717','MTQ','Parc del Castell de Montesquiu',[2.215392,42.123432],10));
-	this.xpn.push(new XPN('1431515010335','OLE','Parc d\'Olèrdola',[1.774774,41.320471],10));
-	this.xpn.push(new XPN('1431514693693','FOX','Parc del Foix',[1.661856,41.277090],10));
-	this.xpn.push(new XPN('1431515045480','AGR','Parc Agrari del Baix Llobregat',[2.062676,41.332351],10));
-	this.xpn.push(new XPN('1431514651345','COL','Parc Natural de la Serra de Collserola',[2.096404,41.431287],10));
+	this.xpn.push(new XPN('1431514969375','MSY','Parc Natural del Montseny',[2.396995,41.773154],11));
+	this.xpn.push(new XPN('1431514726479','GRF','Parc del Garraf',[1.873994,41.295448],11));
+	this.xpn.push(new XPN('1431514847466','MAR','Parc de la Serralada de Marina',[2.241297,41.484169],13));
+	this.xpn.push(new XPN('1431514809219','SLI','Parc de la Serralada Litoral',[2.338874,41.542325],12));
+	this.xpn.push(new XPN('1431514928133','MOC','Parc del Montnegre i el Corredor',[2.543636,41.654674],11));
+	this.xpn.push(new XPN('1431514772466','GUI','Espai Natural de les Guilleries-Savassona',[2.390846,41.951612],12));
+	this.xpn.push(new XPN('1431514892717','MTQ','Parc del Castell de Montesquiu',[2.215392,42.123432],14));
+	this.xpn.push(new XPN('1431515010335','OLE','Parc d\'Olèrdola',[1.7147,41.2897],13));
+	this.xpn.push(new XPN('1431514693693','FOX','Parc del Foix',[1.6552,41.2726],12));
+	this.xpn.push(new XPN('1431515045480','AGR','Parc Agrari del Baix Llobregat',[2.0668,41.3706],11));
+	this.xpn.push(new XPN('1431514651345','COL','Parc Natural de la Serra de Collserola',[2.096404,41.431287],12));
 
 	this.ALAserver = 'http://datos.gbif.es';
 

@@ -185,7 +185,7 @@ function d3pie_taxonomy_onclick(acronim,g,a,dades,gtaxonomy_numtaxon)
 					}
 				}
 			);
-		}//Si ja estem al rank espècies, no faig res més
+		}//Si ja estem al rank species no faig res més
 		else
 		{
 			g.options.callbacks.onMouseoverSegment = function(d){d3.select('body').style("cursor", "not-allowed");};
@@ -383,7 +383,7 @@ function graph_bar_fontdades(dades)
 	//Màximes fonts de dades que es posaran al gràfic
 	var max_categories = 10;
 		
-	var abs_width = 800;
+	var abs_width = 750;
 	var abs_height = 400;
 
 	//Creo una escala ordinal de 20 colors
@@ -438,6 +438,7 @@ function graph_bar_fontdades(dades)
 	var svg = d3.select("div#fontsdades-body").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
+	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -462,7 +463,9 @@ function graph_bar_fontdades(dades)
 		.style({'stroke-width': '0px'})
 		.call(yAxis)
 	.selectAll('.tick text')
-		.call(wrap, 400)
+		.call(wrap, 450)
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.style("text-anchor", "end")
 
 		;	
@@ -576,12 +579,16 @@ function graph_pie_template(div, titol, dades)
 	defaults.header.title.text = titol;
 	defaults.data.content = dades;
 
-	return pie = new d3pie(div, defaults);
+	var pie = new d3pie(div, defaults);
+	$('div#'+div+' svg').attr('class', 'img-responsive');
+	return pie;
 };
 
 function graph_pie_params(div, params)
 {
-	return pie = new d3pie(div, params);
+	var pie = new d3pie(div, params);
+	$('div#'+div+' svg').attr('class', 'img-responsive');
+	return pie;
 };
 
 function pie_defaults()
@@ -605,7 +612,7 @@ return	{
 			"canvasWidth": 400,
 			"canvasHeight": 300,
 			"pieInnerRadius": "50%",
-			"pieOuterRadius": "80%"
+			"pieOuterRadius": "75%"
 		},
 		"data": {
 			"sortOrder": "value-desc",
@@ -680,7 +687,7 @@ function graph_bar_observacions_ocurrence_date(dades)
 	});
 
 
-	var abs_width = 900;
+	var abs_width = 800;
 	var abs_height = 250;
 	
     //Margins
@@ -741,6 +748,7 @@ function graph_bar_observacions_ocurrence_date(dades)
 	var svg = d3.select("div#observacions_ocurrence_date").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
+	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -892,6 +900,7 @@ function graph_bar_observacions_elevation(dades)
 	var svg = d3.select("div#observacions-body-elevation").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
+	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

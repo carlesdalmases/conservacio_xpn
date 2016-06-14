@@ -1,7 +1,10 @@
 function mapa_observacions(acronim)
 {
 
-	//Inst‡ncies dels objectes amb les capes WMS 
+	//Actualitzo el t√≠tol
+	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>');
+	
+	//Inst√†ncies dels objectes amb les capes WMS 
 	var icc = new CAPES_ICC();
 	var diba = new CAPES_DIBA();
 	var gbif = new CAPES_GBIF(acronim);	
@@ -23,7 +26,7 @@ function mapa_observacions(acronim)
 	//Calculo l'extent del mapa segons la vista inicial
 	mapextent = map.getView().calculateExtent(map.getSize());
 
-	//Inst‡ncia de l'objecte amb la llista de controls del mapa
+	//Inst√†ncia de l'objecte amb la llista de controls del mapa
 	var controls_list = new CONTROLS(mapextent);
 	_.each(controls_list.getControls(), function(d){map.addControl(d)});
 
@@ -72,16 +75,16 @@ CONTROLS.prototype.getControls = function()
 
 function gbif_consulta_observacions(acronim, map, gbif, evt)
 {
-		//Si hi ha una capa overlay al mapa (resultat d'una consulta prËvia), no faig res
+		//Si hi ha una capa overlay al mapa (resultat d'una consulta pr√®via), no faig res
 		if(map.getOverlays().getArray().length){console.log('No');return;};
 		
 		var coord = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
 		var r = bioxpn_config.zoomradius.get_radius(map.getView().getZoom());
 		
-		//Elimino la capa de seleccions prËvies
+		//Elimino la capa de seleccions pr√®vies
 		removeLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
 		
-		//Determinar si el click a dins o a fora de 'acrÚnim'
+		//Determinar si el click a dins o a fora de 'acr√≤nim'
 		query_server(bioxpn_config.get_URL_puntradi_facet('id',coord,r)).then
 		(
 			function(df)
@@ -92,22 +95,22 @@ function gbif_consulta_observacions(acronim, map, gbif, evt)
 				//Si no ha trobat res, acabo.
 				if(!num_obs){return false;}
 				
-				//Dels resultats, nomÈs 1 registre del facet, l'utilitzo per preguntar si est‡ dins de l'‡mbit 'acrÚnim'
+				//Dels resultats, nom√©s 1 registre del facet, l'utilitzo per preguntar si est√† dins de l'√†mbit 'acr√≤nim'
 				query_server(bioxpn_config.get_URL_acronim_obsID(acronim,df.facetResults[0].fieldResult[0].label)).then
 				(
 					function(df)
 					{
-						//Si no tornen registres, estic fÚra de l'‡mbit.
+						//Si no tornen registres, estic f√≤ra de l'√†mbit.
 						if(!df.totalRecords){return false;}
 
-						//a dins de l'‡mbit
+						//a dins de l'√†mbit
 						else
 						{
 							//Mostrar la capa amb el punt(s) seleccionat(s)
 							gbif.set_layer_selection_puntradi(coord, r);
 							addLayer_check(map, gbif.get_tilelayer('seleccio_puntradi'));
 							
-							//Demanar el n˙mero de taxons en el punt latlon_radi
+							//Demanar el n√∫mero de taxons en el punt latlon_radi
 							query_server(bioxpn_config.get_URL_numtaxa_puntradi(coord,r)).then
 							(
 								function(df)
@@ -157,7 +160,7 @@ function mostrar_popup(map, gbif, coord_view, coord_map, radius, num_obs, num_ta
 	//Si NO s'ha buscat un taxon_name concret
 	if(!map_layer_check(map, gbif.get_tilelayer('seleccio_taxon')))
 	{
-		//BotÛ Observacions
+		//Bot√≥ Observacions
 		$newButton_obs = $('<button/>')
 					.attr('type', 'button')
 					.addClass('btn btn-primary btn-xs')
@@ -167,7 +170,7 @@ function mostrar_popup(map, gbif, coord_view, coord_map, radius, num_obs, num_ta
 		$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
 		$($newpopupcontent).append($($('<div/>').addClass('row').attr('style', 'padding:3px;margin:auto')).append($newButton_obs));
 		
-		//BotÛ taxa
+		//Bot√≥ taxa
 		$newButton_taxa = $('<button/>')
 					.attr('type', 'button')
 					.addClass('btn btn-primary btn-xs')
@@ -196,7 +199,7 @@ function mostrar_popup(map, gbif, coord_view, coord_map, radius, num_obs, num_ta
 			{
 				no=df.totalRecords;
 				
-				//BotÛ Observacions
+				//Bot√≥ Observacions
 				$newButton_obs = $('<button/>')
 							.attr('type', 'button')
 							.addClass('btn btn-primary btn-xs')
