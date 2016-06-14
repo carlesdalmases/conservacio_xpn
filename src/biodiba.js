@@ -85,6 +85,7 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('reset','ca','Reset');	
 	this.set_translates('permesos','ca','per mesos de l\'any');
 	this.set_translates('occurrencesdensity','ca','Densitat d\'observacions');
+	this.set_translates('taxons','ca','Tàxons');
 	
 	//Tipus de registre
 	this.set_translates('PreservedSpecimen','ca','espècimen preservat');
@@ -162,7 +163,7 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('perdates','ca','per dates');
 	
 
-
+	this.set_translates('downloads','ca','Descàrregues');
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
 	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',
@@ -329,8 +330,6 @@ BIOXPN_CONFIG.prototype.get_URL_observacions_elevation = function(acronim)
 {
 	return this.get_URL_acronim_facet(acronim, 'elevation_d');
 };
-
-
 
 //Retorna la URL per obtenir les observacions per formes de vida i per un acronim
 BIOXPN_CONFIG.prototype.get_URL_observacions_lifeform = function(acronim) 
@@ -600,8 +599,10 @@ function create_page()
 				"</div>"+
 			"</div>"+
 
-
-			"<div id='downloads'></div>"+
+			"<div id='downloads' class='panel panel-default'>"+
+				"<div id='downloads-header' class='panel-heading'></div>"+
+				"<div id='downloads-body' class='panel-body'></div>"+
+			"</div>"+
 
 			"<div id='footer' class='panel panel-default panel-body'>"+
 				"<div id='footer_header' class='row' style='padding:10px'></div>"+
@@ -3190,7 +3191,33 @@ function construir_search_button()
 		$($newrow).append($newCol);
 		$('#mapobs').append($newrow);
 };
+function downloads(acronim)
+{
+	//Actualitzo el t�tol
+	$('div#downloads-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('downloads')+'</h1>');
 
+	$('div#downloads-body').append(
+								
+  								'<button id="btn_download_occurrences" type="button" class="btn btn-default">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'<span class=\'glyphicon glyphicon-download\'></span></button>'+
+  								'<button id="btn_download_taxons" type="button" class="btn btn-default">'+bioxpn_config.translates.get_translate('taxons')+'<span class=\'glyphicon glyphicon-download\'></span></button>'+
+  								'<button id="btn_download_attribution" type="button" class="btn btn-default">'+bioxpn_config.translates.get_translate('fontsdedades')+'<span class=\'glyphicon glyphicon-download\'></span></button>'
+							);
+
+	//$('#btn_download_occurrences').on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_puntradi(coord_map,radius))});
+	$('#btn_download_occurrences').on('click', function(){alert('HOLA')});
+
+/*
+		//Bot� Observacions
+		$newButton_obs = $('<button/>')
+					.attr('type', 'button')
+					.addClass('btn btn-primary btn-xs')
+					.text(num_obs+' observacions ')
+					.on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_puntradi(coord_map,radius))});
+					
+		$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
+*/
+
+}; //Fi de downloads()
 //Configuració
 var bioxpn_config = new BIOXPN_CONFIG();
 	
@@ -3200,18 +3227,18 @@ function main_(acr)
 
 	create_page();
 	
-	$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
-	$('#intro').append(bioxpn_config.translates.get_translate('intro'));
-	$('#disclaimer').append('<p>'+bioxpn_config.translates.get_translate('disclaimer')+'</p>');
-	$('#footer_header').append(bioxpn_config.translates.get_translate('colaborate'));
-
-	mapa_observacions(acronim);
-	mapa_densitat_observacions(acronim);
-	fonts_de_dades(acronim);
-	observacions_resum(acronim);
-	qualitat_dades(acronim);
-	taxons(acronim);
-	taxonomy(acronim);
-
+//	$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
+//	$('#intro').append(bioxpn_config.translates.get_translate('intro'));
+//	$('#disclaimer').append('<p>'+bioxpn_config.translates.get_translate('disclaimer')+'</p>');
+//	$('#footer_header').append(bioxpn_config.translates.get_translate('colaborate'));
+//
+//	mapa_observacions(acronim);
+//	mapa_densitat_observacions(acronim);
+//	fonts_de_dades(acronim);
+//	observacions_resum(acronim);
+//	qualitat_dades(acronim);
+//	taxons(acronim);
+//	taxonomy(acronim);
+	downloads(acronim);
 } // Fi de main_()
 

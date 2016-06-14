@@ -85,6 +85,7 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('reset','ca','Reset');	
 	this.set_translates('permesos','ca','per mesos de l\'any');
 	this.set_translates('occurrencesdensity','ca','Densitat d\'observacions');
+	this.set_translates('taxons','ca','Tàxons');
 	
 	//Tipus de registre
 	this.set_translates('PreservedSpecimen','ca','espècimen preservat');
@@ -162,7 +163,7 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('perdates','ca','per dates');
 	
 
-
+	this.set_translates('downloads','ca','Descàrregues');
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
 	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',

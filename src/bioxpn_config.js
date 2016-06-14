@@ -99,8 +99,6 @@ BIOXPN_CONFIG.prototype.get_URL_observacions_elevation = function(acronim)
 	return this.get_URL_acronim_facet(acronim, 'elevation_d');
 };
 
-
-
 //Retorna la URL per obtenir les observacions per formes de vida i per un acronim
 BIOXPN_CONFIG.prototype.get_URL_observacions_lifeform = function(acronim) 
 {

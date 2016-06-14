@@ -23,4 +23,10 @@
 	color:#337ab7;
 }
 	
-	
+#downloads-body	.btn{
+	margin-left:10px;
+}
+
+#downloads-body	.btn .glyphicon{
+	margin-left:3px;
+}

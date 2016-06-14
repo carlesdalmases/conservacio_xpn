@@ -14,5 +14,6 @@ type groups_query.js >> biodiba.js
 type loaddata.js >> biodiba.js
 type query_numtaxa_by_rank.js >> biodiba.js
 type search_taxon_name.js >> biodiba.js
+type downloads.js >> biodiba.js
 type main_.js >> biodiba.js
 

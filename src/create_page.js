@@ -76,8 +76,10 @@ function create_page()
 				"</div>"+
 			"</div>"+
 
-
-			"<div id='downloads'></div>"+
+			"<div id='downloads' class='panel panel-default'>"+
+				"<div id='downloads-header' class='panel-heading'></div>"+
+				"<div id='downloads-body' class='panel-body'></div>"+
+			"</div>"+
 
 			"<div id='footer' class='panel panel-default panel-body'>"+
 				"<div id='footer_header' class='row' style='padding:10px'></div>"+
