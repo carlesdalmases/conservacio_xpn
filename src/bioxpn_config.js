@@ -155,11 +155,24 @@ BIOXPN_CONFIG.prototype.get_URL_numobs_taxonname_puntradi = function(taxon_name,
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=*:*&fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&facet=off&pageSize=0';
 };
 
+//Retorna la URL per descarregar les observacions d'un acronim
+BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/index/download?q=qid:'+this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
+};
+
 //Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
 };
+
+//Retorna la URL per descarregar la llista de fonts de dades d'un acronim
+BIOXPN_CONFIG.prototype.get_URL_dataresourcesdownload = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc';
+};
+
 
 //Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenades,radi) 
@@ -167,13 +180,13 @@ BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenade
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&facets=taxon_name&count=false&fsort=index&dir=asc&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi;
 };
 
-//Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
+//Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_puntradi = function(coordenades,radi) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/index/download?q=*:*&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
 };
 
-//Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
+//Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_taxonname_puntradi = function(taxon_name,coordenades,radi) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/index/download?fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';

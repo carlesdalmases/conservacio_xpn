@@ -387,11 +387,24 @@ BIOXPN_CONFIG.prototype.get_URL_numobs_taxonname_puntradi = function(taxon_name,
 	return this.ALAserver+'/biocache-service/occurrences/search.json?q=*:*&fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&facet=off&pageSize=0';
 };
 
+//Retorna la URL per descarregar les observacions d'un acronim
+BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/index/download?q=qid:'+this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
+};
+
 //Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
 };
+
+//Retorna la URL per descarregar la llista de fonts de dades d'un acronim
+BIOXPN_CONFIG.prototype.get_URL_dataresourcesdownload = function(acronim) 
+{
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc';
+};
+
 
 //Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenades,radi) 
@@ -399,13 +412,13 @@ BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenade
 	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&facets=taxon_name&count=false&fsort=index&dir=asc&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi;
 };
 
-//Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
+//Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_puntradi = function(coordenades,radi) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/index/download?q=*:*&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
 };
 
-//Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
+//Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_taxonname_puntradi = function(taxon_name,coordenades,radi) 
 {
 	return this.ALAserver+'/biocache-service/occurrences/index/download?fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
@@ -3197,25 +3210,14 @@ function downloads(acronim)
 	$('div#downloads-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('downloads')+'</h1>');
 
 	$('div#downloads-body').append(
-								
   								'<button id="btn_download_occurrences" type="button" class="btn btn-default">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'<span class=\'glyphicon glyphicon-download\'></span></button>'+
   								'<button id="btn_download_taxons" type="button" class="btn btn-default">'+bioxpn_config.translates.get_translate('taxons')+'<span class=\'glyphicon glyphicon-download\'></span></button>'+
   								'<button id="btn_download_attribution" type="button" class="btn btn-default">'+bioxpn_config.translates.get_translate('fontsdedades')+'<span class=\'glyphicon glyphicon-download\'></span></button>'
 							);
 
-	//$('#btn_download_occurrences').on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_puntradi(coord_map,radius))});
-	$('#btn_download_occurrences').on('click', function(){alert('HOLA')});
-
-/*
-		//Botó Observacions
-		$newButton_obs = $('<button/>')
-					.attr('type', 'button')
-					.addClass('btn btn-primary btn-xs')
-					.text(num_obs+' observacions ')
-					.on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload_puntradi(coord_map,radius))});
-					
-		$($newButton_obs).append('<span class=\'glyphicon glyphicon-download\'></span>');
-*/
+	$('#btn_download_occurrences').on('click', function(){downloadfile(bioxpn_config.get_URL_occurrencesdownload(acronim))});
+	$('#btn_download_taxons').on('click', function(){downloadfile(bioxpn_config.get_URL_checlistkdownload(acronim))});
+	$('#btn_download_attribution').on('click', function(){downloadfile(bioxpn_config.get_URL_dataresourcesdownload(acronim))});
 
 }; //Fi de downloads()
 //ConfiguraciÃ³
@@ -3227,18 +3229,18 @@ function main_(acr)
 
 	create_page();
 	
-//	$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
-//	$('#intro').append(bioxpn_config.translates.get_translate('intro'));
-//	$('#disclaimer').append('<p>'+bioxpn_config.translates.get_translate('disclaimer')+'</p>');
-//	$('#footer_header').append(bioxpn_config.translates.get_translate('colaborate'));
-//
-//	mapa_observacions(acronim);
-//	mapa_densitat_observacions(acronim);
-//	fonts_de_dades(acronim);
-//	observacions_resum(acronim);
-//	qualitat_dades(acronim);
-//	taxons(acronim);
-//	taxonomy(acronim);
+	$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
+	$('#intro').append(bioxpn_config.translates.get_translate('intro'));
+	$('#disclaimer').append('<p>'+bioxpn_config.translates.get_translate('disclaimer')+'</p>');
+	$('#footer_header').append(bioxpn_config.translates.get_translate('colaborate'));
+
+	mapa_observacions(acronim);
+	mapa_densitat_observacions(acronim);
+	fonts_de_dades(acronim);
+	observacions_resum(acronim);
+	qualitat_dades(acronim);
+	taxons(acronim);
+	taxonomy(acronim);
 	downloads(acronim);
 } // Fi de main_()
 
