@@ -6,7 +6,8 @@ function qualitat_dades(acronim)
 		function(df)
 		{
 			//Títol
-			$('div#qualitatdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('qualitatdades')+'</h1>');
+			$('div#qualitatdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('qualitatdades')+'</h1>'+
+											   bioxpn_config.translates.get_translate('qualitatdades_subtitle'));
 
 			//preparo les dades
 			var missingCollectionDate=[];
@@ -63,7 +64,8 @@ function fonts_de_dades(acronim)
 		function(df)
 		{
 			//Actualitzo el title
-			$('div#fontsdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('fontsdedades')+': '+df.facetResults[0].fieldResult.length+'</h1>');
+			$('div#fontsdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('fontsdedades')+': '+df.facetResults[0].fieldResult.length+'</h1>'+
+											bioxpn_config.translates.get_translate('fontsdedades_subtitle'));
 
 			//Ordeno les dades per count, desc
 			graph_bar_fontdades(_.sortBy(df.facetResults[0].fieldResult, 'count').reverse());
@@ -74,7 +76,8 @@ function fonts_de_dades(acronim)
 // Obtenir i fer els gràfics de les observacions
 function observacions_resum(acronim)
 {
-	$('div#observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>');
+	$('div#observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>'+
+									   bioxpn_config.translates.get_translate('occurrences_subtitle'));
 
 /*
 	query_server(bioxpn_config.get_URL_observacions_kingdom(acronim)).then
@@ -136,7 +139,8 @@ function observacions_resum(acronim)
 //Obtenir i fer el gràfic per jeraquia taxonòmica
 function taxonomy(acronim)
 {
-	$('div#taxonomy-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('jerarquiataxonomica')+'</h1>');
+	$('div#taxonomy-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('jerarquiataxonomica')+'</h1>'+
+								  bioxpn_config.translates.get_translate('jerarquiataxonomica_subtitle'));
 	
 	query_server(bioxpn_config.get_URL_breakdown_observacions(acronim, 'kingdom')).then
 	(
@@ -161,7 +165,8 @@ function taxons(acronim)
 	 $.when(load_groups(acronim)).done(function (root) 
 	 {
 		//Actualitzo el title
-		$('div#taxons-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('gransgrups')+'</h1>');
+		$('div#taxons-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('gransgrups')+'</h1>'+
+									bioxpn_config.translates.get_translate('gransgrups_subtitle'));
 
 		//Gràfics dels taxons per grans grups i observacions
 

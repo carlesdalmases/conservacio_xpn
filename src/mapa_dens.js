@@ -2,7 +2,8 @@ function mapa_densitat_observacions(acronim)
 {
 
 	//Actualitzo el títol
-	$('div#mapa-densitat-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('occurrencesdensity')+'</h1>');
+	$('div#mapa-densitat-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('occurrencesdensity')+'</h1>'+
+									   bioxpn_config.translates.get_translate('occurrencesdensity_subtitle'));
 
 	//Instàncies dels objectes amb les capes WMS 
 	var icc = new CAPES_ICC();

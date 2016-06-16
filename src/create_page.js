@@ -86,8 +86,8 @@ function create_page()
 				"<div class='row'>"+
 					"<div class='col-md-3'><a href='http://datos.gbif.es' title='GBIF.es' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-gbif300pp-verde.jpg' alt='GBIF.es' style='margin-top:5px;width:auto;height:50px'></a></div>"+
 					"<div class='col-md-3'><a href='http://www.ala.org.au' title='Atlas of Living Australia' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/ala-white.png' alt='Atlas of Living Australia' style='margin-top:5px;width:auto;height:50px'></a></div>"+
-					"<div class='col-md-3'><a href='http://www.mineco.gob.es/' title='Ministerio de Economia y Competitividad' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-mineco.jpg' alt='Ministerio de Economia y Competitividad' style='margin-top:5px;width:auto;height:50px'></a></div>"+
-					"<div class='col-md-3'><a href='http://www.csic.es/' title='Consejo Superior de Investigaciones Científicas' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logoCsic.png' alt='Consejo Superior de Investigaciones Científicas' style='margin-top:5px;width:auto;height:50px'></a></div>"+
+					"<!-- <div class='col-md-3'><a href='http://www.mineco.gob.es/' title='Ministerio de Economia y Competitividad' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-mineco.jpg' alt='Ministerio de Economia y Competitividad' style='margin-top:5px;width:auto;height:50px'></a></div> -->"+
+					"<div class='col-md-3'><a href='http://www.csic.es/' title='Consejo Superior de Investigaciones Científicas' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/LOGO+GOB_MEC_CSIC_RJB.JPG' alt='Consejo Superior de Investigaciones Científicas' style='margin-top:5px;width:auto;height:50px'></a></div>"+
 				"</div>"+
 			"</div>"+
 

@@ -105,8 +105,8 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('locationSupplied','ca','amb localitat');
 	this.set_translates('localitzacio','ca','localitats');
 	this.set_translates('precissio','ca','coordenades');
-	this.set_translates('missingCoordinatePrecision','ca','sense precissió');
-	this.set_translates('Not_missingCoordinatePrecision','ca','amb precissió');
+	this.set_translates('missingCoordinatePrecision','ca','sense precisió');
+	this.set_translates('Not_missingCoordinatePrecision','ca','amb precisió');
 	this.set_translates('uncertaintyNotSpecified','ca','sense incertesa');
 	this.set_translates('Not_uncertaintyNotSpecified','ca','amb incertesa');
 	this.set_translates('incertesa','ca','coordenades');
@@ -165,7 +165,7 @@ TRANSLATES.prototype.load_translates = function()
 
 	this.set_translates('downloads','ca','Descàrregues');
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
-	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
+	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina s\'està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',
 	
 		'<p>La informació referent a la biodiversitat que es presenta en aquesta pàgina es crea de forma automàtica,'+
@@ -174,8 +174,37 @@ TRANSLATES.prototype.load_translates = function()
 		'També cal considerar la distribució espacial de les observacions, amb coordenades més o menys precises, i l\'escala dels límits de l\'espai natural utilitzats per a fer la consulta.</p>'+
 		'<p>Periòdicament s\'actualitzen i amplien les fonts d\'informació al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a> i, '+ 
 		'automàticament, s\'actualitza aquesta pàgina. Si teniu coneixement d\'un conjunt d\'observacions en aquest Parc Natural que podria completar aquesta informació, '+ 
-		'en ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>'+
+		'en ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>');
 
+	this.set_translates('jerarquiataxonomica_subtitle','ca',
+	'Totes les observacions i els tàxons ordenats per jerarquia taxònomica. Interactiu.');
+
+	this.set_translates('occurrences_subtitle','ca',
+	'Es mostra el perfil altitudinal de distribució de les observacions (en el cas que tinguin documentada l\'altitud) '+
+	'el tipus d\'observació (observació al camp, registre fòssil, plec d\'herbari, etc.), la distribució de les observacions al llarg de l\'any i '+
+	'finalment, la seva distribució temporal.');
+
+	this.set_translates('qualitatdades_subtitle','ca',
+	'Per una correcta interpretació de les dades, cal tenir una indicació de la seva qualitat. '+
+	'Es mostra les observacions que tenen documentada la data d\'observació, de les que s\'ha '+
+	'indicat la localitat (topònim), i de si s\'ha indicat la incertesa (error) i la precisió de les coordenades.');
+
+	this.set_translates('gransgrups_subtitle','ca',
+	'Observacions i tàxons ordenats per grans grups, sempre que s\'hagi '+
+	'documentat a les fonts d\'informació originals. Interactiu.');
+
+	this.set_translates('fontsdedades_subtitle','ca',
+	'Distribució de les observacions segons la font d\'informació original.');
+
+	this.set_translates('occurrences_map_subtitle','ca',
+	'Distribució espacial de les observacions. Es pot consultar una localitat concreta i buscar per un determinat tàxon. '+
+	'Per una localitat concreta, es poden descarregar (CSV) la llista de d\'observacions i tàxons presents.');
+
+	this.set_translates('occurrencesdensity_subtitle','ca',
+	'Densitats d\'observacions en una quadrícula arbritària.');
+
+		
+/*
 		'<ul class="list-group">'+
 			'<span class="nav-header disabled">Les observacions de biodiversitat en aquest parc natural es presenten com:</span>'+
 			'<span class="list-group-item">'+
@@ -194,7 +223,7 @@ TRANSLATES.prototype.load_translates = function()
 			    '<p class="list-group-item-heading">Qualitat de les dades</p>'+
 			    '<p class="list-group-item-text">Per una correcta interpretació de les dades, cal tenir una indicació de la seva qualitat. '+
 												'En aquest apartat es mostra el tant per cent de les observacions que tenen documentada la data d\'observació, de si s\'ha '+
-												'indicat la localitat (topònim), i si s\'ha indicat la incertesa (error) i la precissió de les coordenades.</p>'+
+												'indicat la localitat (topònim), i si s\'ha indicat la incertesa (error) i la precisió de les coordenades.</p>'+
 			'</span>'+
 	
 			'<span class="list-group-item">'+
@@ -220,6 +249,7 @@ TRANSLATES.prototype.load_translates = function()
 			'</span>'+
 		'</ul>'
 	);
+*/
 
 	//this.set_translates('value','ca','XXX');
 
@@ -622,8 +652,8 @@ function create_page()
 				"<div class='row'>"+
 					"<div class='col-md-3'><a href='http://datos.gbif.es' title='GBIF.es' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-gbif300pp-verde.jpg' alt='GBIF.es' style='margin-top:5px;width:auto;height:50px'></a></div>"+
 					"<div class='col-md-3'><a href='http://www.ala.org.au' title='Atlas of Living Australia' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/ala-white.png' alt='Atlas of Living Australia' style='margin-top:5px;width:auto;height:50px'></a></div>"+
-					"<div class='col-md-3'><a href='http://www.mineco.gob.es/' title='Ministerio de Economia y Competitividad' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-mineco.jpg' alt='Ministerio de Economia y Competitividad' style='margin-top:5px;width:auto;height:50px'></a></div>"+
-					"<div class='col-md-3'><a href='http://www.csic.es/' title='Consejo Superior de Investigaciones Científicas' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logoCsic.png' alt='Consejo Superior de Investigaciones Científicas' style='margin-top:5px;width:auto;height:50px'></a></div>"+
+					"<!-- <div class='col-md-3'><a href='http://www.mineco.gob.es/' title='Ministerio de Economia y Competitividad' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/logo-mineco.jpg' alt='Ministerio de Economia y Competitividad' style='margin-top:5px;width:auto;height:50px'></a></div> -->"+
+					"<div class='col-md-3'><a href='http://www.csic.es/' title='Consejo Superior de Investigaciones Científicas' target='_blank' style='border-bottom:0px'><img src='http://parcs.diba.cat/documents/43788175/75144491/LOGO+GOB_MEC_CSIC_RJB.JPG' alt='Consejo Superior de Investigaciones Científicas' style='margin-top:5px;width:auto;height:50px'></a></div>"+
 				"</div>"+
 			"</div>"+
 
@@ -1218,7 +1248,8 @@ function mapa_densitat_observacions(acronim)
 {
 
 	//Actualitzo el títol
-	$('div#mapa-densitat-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('occurrencesdensity')+'</h1>');
+	$('div#mapa-densitat-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('occurrencesdensity')+'</h1>'+
+									   bioxpn_config.translates.get_translate('occurrencesdensity_subtitle'));
 
 	//Instàncies dels objectes amb les capes WMS 
 	var icc = new CAPES_ICC();
@@ -1268,7 +1299,8 @@ function mapa_observacions(acronim)
 {
 
 	//Actualitzo el títol
-	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>');
+	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>'+
+											bioxpn_config.translates.get_translate('occurrences_map_subtitle'));
 	
 	//Instàncies dels objectes amb les capes WMS 
 	var icc = new CAPES_ICC();
@@ -2798,7 +2830,8 @@ function qualitat_dades(acronim)
 		function(df)
 		{
 			//Títol
-			$('div#qualitatdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('qualitatdades')+'</h1>');
+			$('div#qualitatdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('qualitatdades')+'</h1>'+
+											   bioxpn_config.translates.get_translate('qualitatdades_subtitle'));
 
 			//preparo les dades
 			var missingCollectionDate=[];
@@ -2855,7 +2888,8 @@ function fonts_de_dades(acronim)
 		function(df)
 		{
 			//Actualitzo el title
-			$('div#fontsdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('fontsdedades')+': '+df.facetResults[0].fieldResult.length+'</h1>');
+			$('div#fontsdades-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('fontsdedades')+': '+df.facetResults[0].fieldResult.length+'</h1>'+
+											bioxpn_config.translates.get_translate('fontsdedades_subtitle'));
 
 			//Ordeno les dades per count, desc
 			graph_bar_fontdades(_.sortBy(df.facetResults[0].fieldResult, 'count').reverse());
@@ -2866,7 +2900,8 @@ function fonts_de_dades(acronim)
 // Obtenir i fer els gràfics de les observacions
 function observacions_resum(acronim)
 {
-	$('div#observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>');
+	$('div#observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>'+
+									   bioxpn_config.translates.get_translate('occurrences_subtitle'));
 
 /*
 	query_server(bioxpn_config.get_URL_observacions_kingdom(acronim)).then
@@ -2928,7 +2963,8 @@ function observacions_resum(acronim)
 //Obtenir i fer el gràfic per jeraquia taxonòmica
 function taxonomy(acronim)
 {
-	$('div#taxonomy-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('jerarquiataxonomica')+'</h1>');
+	$('div#taxonomy-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('jerarquiataxonomica')+'</h1>'+
+								  bioxpn_config.translates.get_translate('jerarquiataxonomica_subtitle'));
 	
 	query_server(bioxpn_config.get_URL_breakdown_observacions(acronim, 'kingdom')).then
 	(
@@ -2953,7 +2989,8 @@ function taxons(acronim)
 	 $.when(load_groups(acronim)).done(function (root) 
 	 {
 		//Actualitzo el title
-		$('div#taxons-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('gransgrups')+'</h1>');
+		$('div#taxons-header').html('<h1 class="panel-title">'+bioxpn_config.translates.get_translate('gransgrups')+'</h1>'+
+									bioxpn_config.translates.get_translate('gransgrups_subtitle'));
 
 		//Gràfics dels taxons per grans grups i observacions
 
