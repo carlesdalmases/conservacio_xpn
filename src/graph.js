@@ -436,8 +436,8 @@ function graph_bar_fontdades(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#fontsdades-body").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -580,14 +580,17 @@ function graph_pie_template(div, titol, dades)
 	defaults.data.content = dades;
 
 	var pie = new d3pie(div, defaults);
-	$('div#'+div+' svg').attr('class', 'img-responsive');
+	$('div#'+div+' svg')
+	.attr('class', 'img-responsive')
+	.attr('style', 'width:'+400+'px;'+'height:'+300+'px;');
 	return pie;
 };
 
 function graph_pie_params(div, params)
 {
 	var pie = new d3pie(div, params);
-	$('div#'+div+' svg').attr('class', 'img-responsive');
+	$('div#'+div+' svg').attr('class', 'img-responsive')
+	.attr('style', 'width:'+params.size.canvasWidth+'px;'+'height:'+params.size.canvasHeight+'px;');
 	return pie;
 };
 
@@ -746,8 +749,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#observacions_ocurrence_date").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -898,8 +901,8 @@ function graph_bar_observacions_elevation(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#observacions-body-elevation").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");

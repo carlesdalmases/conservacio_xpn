@@ -2,7 +2,7 @@ function mapa_observacions(acronim)
 {
 
 	//Actualitzo el títol
-	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>'+
+	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences_map'))+'</h1>'+
 											bioxpn_config.translates.get_translate('occurrences_map_subtitle'));
 	
 	//Instàncies dels objectes amb les capes WMS 

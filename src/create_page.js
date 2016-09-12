@@ -5,6 +5,17 @@ function create_page()
 			"<div id='park_name'></div>"+
 			"<div id='intro'></div>"+
 			"<div id='disclaimer'></div>"+
+			"<div id='links_list'><ul class='bullet_parcs'>"+
+				"<li><a href='#taxonomy'>"+_.capitalize(bioxpn_config.translates.get_translate('jerarquiataxonomica'))+"</a></li>"+
+				"<li><a href='#observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+"</a></li>"+
+				"<li><a href='#taxons'>"+_.capitalize(bioxpn_config.translates.get_translate('gransgrups'))+"</a></li>"+
+				"<li><a href='#qualitatdades'>"+_.capitalize(bioxpn_config.translates.get_translate('qualitatdades'))+"</a></li>"+
+				"<li><a href='#fontsdades'>"+_.capitalize(bioxpn_config.translates.get_translate('fontsdedades'))+"</a></li>"+
+				"<li><a href='#mapa_observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrences_map'))+"</a></li>"+
+				"<li><a href='#mapa_densitat_observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrencesdensity'))+"</a></li>"+
+				"<li><a href='#downloads'>"+_.capitalize(bioxpn_config.translates.get_translate('downloads'))+"</a></li>"+
+				"<li><a href='#footer'>"+_.capitalize(bioxpn_config.translates.get_translate('credits'))+"</a></li>"+
+			"</ul></div>"+
 
 			"<div id='taxonomy' class='panel panel-default'>"+
 				"<div id='taxonomy-header' class='panel-heading'></div>"+
@@ -30,6 +41,17 @@ function create_page()
 				"</div>"+
 			"</div>"+
 
+			"<div id='taxons' class='panel panel-default'>"+
+				"<div id='taxons-header' class='panel-heading'></div>"+
+				"<div id='taxons-body' class='panel-body'>"+
+					"<div class='row'>"+
+						"<div id='taxons-body-obs' class='col-md-6'></div>"+
+						"<div id='taxons-body-taxons' class='col-md-6'></div>"+
+					"</div>"+
+					"<div class='row' id='taxons_body_reset'></div>"+
+				"</div>"+
+			"</div>"+
+
 			"<div id='qualitatdades' class='panel panel-default'>"+
 				"<div id='qualitatdades-header' class='panel-heading'></div>"+
 				"<div id='qualitatdades-body' class='panel-body'>"+
@@ -41,17 +63,6 @@ function create_page()
 						"<div id='qualitatdades-body-uncertaintyNotSpecified' class='col-md-6'></div>"+
 						"<div id='qualitatdades-body-missingCoordinatePrecision' class='col-md-6'></div>"+
 					"</div>"+
-				"</div>"+
-			"</div>"+
-			
-			"<div id='taxons' class='panel panel-default'>"+
-				"<div id='taxons-header' class='panel-heading'></div>"+
-				"<div id='taxons-body' class='panel-body'>"+
-					"<div class='row'>"+
-						"<div id='taxons-body-obs' class='col-md-6'></div>"+
-						"<div id='taxons-body-taxons' class='col-md-6'></div>"+
-					"</div>"+
-					"<div class='row' id='taxons_body_reset'></div>"+
 				"</div>"+
 			"</div>"+
 			

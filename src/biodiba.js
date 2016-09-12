@@ -74,6 +74,7 @@ TRANSLATES.prototype.load_translates = function()
 	
 	//General
 	this.set_translates('occurrences','ca','observacions');
+	this.set_translates('occurrences_map','ca','Distribució espacial de les observacions'); 
 	this.set_translates('altres','ca','Altres');
 	this.set_translates('desconegut','ca','Desconegut');
 	this.set_translates('acumulat','ca','Acumulat');
@@ -86,7 +87,8 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('permesos','ca','per mesos de l\'any');
 	this.set_translates('occurrencesdensity','ca','Densitat d\'observacions');
 	this.set_translates('taxons','ca','Tàxons');
-	
+	this.set_translates('credits','ca','Crèdits');
+		
 	//Tipus de registre
 	this.set_translates('PreservedSpecimen','ca','espècimen preservat');
 	this.set_translates('HumanObservation','ca','observació humana');
@@ -163,25 +165,26 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('perdates','ca','per dates');
 	
 
-	this.set_translates('downloads','ca','Descàrregues');
+	this.set_translates('downloads','ca','Descàrregues (<a href="https://ca.wikipedia.org/wiki/CSV">en format CSV</a>)');
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
 	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina s\'està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',
-	
+		'<p>Conèixer les espècies presents a l\’Espai Natural i la seva distribució geogràfica és essencial per valorar la seva riquesa i singularitat. '+
+		'Aquesta informació és ara més fàcil de consultar i analitzar gràcies a les grans bases de dades de biodiversitat que recullen cites i observacions '+
+		'd’espècies de fonts diverses.<p>'+
 		'<p>La informació referent a la biodiversitat que es presenta en aquesta pàgina es crea de forma automàtica,'+
 		'a partir de les fonts d\'informació indexades al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a>.</p>'+
 		'<p>Cal tenir present que les dades inclouen observacions de camps, espècies fòssils, plecs d\'herbari, exemplars conservats en museus, etc. '+ 
 		'També cal considerar la distribució espacial de les observacions, amb coordenades més o menys precises, i l\'escala dels límits de l\'espai natural utilitzats per a fer la consulta.</p>'+
 		'<p>Periòdicament s\'actualitzen i amplien les fonts d\'informació al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a> i, '+ 
 		'automàticament, s\'actualitza aquesta pàgina. Si teniu coneixement d\'un conjunt d\'observacions en aquest Parc Natural que podria completar aquesta informació, '+ 
-		'en ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>');
-
+		'ens ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>');
 	this.set_translates('jerarquiataxonomica_subtitle','ca',
 	'Totes les observacions i els tàxons ordenats per jerarquia taxònomica. Interactiu.');
 
 	this.set_translates('occurrences_subtitle','ca',
 	'Es mostra el perfil altitudinal de distribució de les observacions (en el cas que tinguin documentada l\'altitud) '+
-	'el tipus d\'observació (observació al camp, registre fòssil, plec d\'herbari, etc.), la distribució de les observacions al llarg de l\'any i '+
+	'el tipus de registre (observació al camp, registre fòssil, plec d\'herbari, etc.), la distribució de les observacions al llarg de l\'any i '+
 	'finalment, la seva distribució temporal.');
 
 	this.set_translates('qualitatdades_subtitle','ca',
@@ -197,11 +200,11 @@ TRANSLATES.prototype.load_translates = function()
 	'Distribució de les observacions segons la font d\'informació original.');
 
 	this.set_translates('occurrences_map_subtitle','ca',
-	'Distribució espacial de les observacions. Es pot consultar una localitat concreta i buscar per un determinat tàxon. '+
-	'Per una localitat concreta, es poden descarregar (CSV) la llista de d\'observacions i tàxons presents.');
+	'Es pot consultar una localitat concreta i buscar per un determinat tàxon. '+
+	'Per una localitat concreta, es pot descarregar <a href="https://ca.wikipedia.org/wiki/CSV">en format CSV</a> la llista de d\'observacions i tàxons presents.');
 
 	this.set_translates('occurrencesdensity_subtitle','ca',
-	'Densitats d\'observacions en una quadrícula arbritària.');
+	'Densitats d\'observacions per quadrícula (de mida variable segons el nivell de zoom).');
 
 		
 /*
@@ -571,6 +574,17 @@ function create_page()
 			"<div id='park_name'></div>"+
 			"<div id='intro'></div>"+
 			"<div id='disclaimer'></div>"+
+			"<div id='links_list'><ul class='bullet_parcs'>"+
+				"<li><a href='#taxonomy'>"+_.capitalize(bioxpn_config.translates.get_translate('jerarquiataxonomica'))+"</a></li>"+
+				"<li><a href='#observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+"</a></li>"+
+				"<li><a href='#taxons'>"+_.capitalize(bioxpn_config.translates.get_translate('gransgrups'))+"</a></li>"+
+				"<li><a href='#qualitatdades'>"+_.capitalize(bioxpn_config.translates.get_translate('qualitatdades'))+"</a></li>"+
+				"<li><a href='#fontsdades'>"+_.capitalize(bioxpn_config.translates.get_translate('fontsdedades'))+"</a></li>"+
+				"<li><a href='#mapa_observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrences_map'))+"</a></li>"+
+				"<li><a href='#mapa_densitat_observacions'>"+_.capitalize(bioxpn_config.translates.get_translate('occurrencesdensity'))+"</a></li>"+
+				"<li><a href='#downloads'>"+_.capitalize(bioxpn_config.translates.get_translate('downloads'))+"</a></li>"+
+				"<li><a href='#footer'>"+_.capitalize(bioxpn_config.translates.get_translate('credits'))+"</a></li>"+
+			"</ul></div>"+
 
 			"<div id='taxonomy' class='panel panel-default'>"+
 				"<div id='taxonomy-header' class='panel-heading'></div>"+
@@ -596,6 +610,17 @@ function create_page()
 				"</div>"+
 			"</div>"+
 
+			"<div id='taxons' class='panel panel-default'>"+
+				"<div id='taxons-header' class='panel-heading'></div>"+
+				"<div id='taxons-body' class='panel-body'>"+
+					"<div class='row'>"+
+						"<div id='taxons-body-obs' class='col-md-6'></div>"+
+						"<div id='taxons-body-taxons' class='col-md-6'></div>"+
+					"</div>"+
+					"<div class='row' id='taxons_body_reset'></div>"+
+				"</div>"+
+			"</div>"+
+
 			"<div id='qualitatdades' class='panel panel-default'>"+
 				"<div id='qualitatdades-header' class='panel-heading'></div>"+
 				"<div id='qualitatdades-body' class='panel-body'>"+
@@ -607,17 +632,6 @@ function create_page()
 						"<div id='qualitatdades-body-uncertaintyNotSpecified' class='col-md-6'></div>"+
 						"<div id='qualitatdades-body-missingCoordinatePrecision' class='col-md-6'></div>"+
 					"</div>"+
-				"</div>"+
-			"</div>"+
-			
-			"<div id='taxons' class='panel panel-default'>"+
-				"<div id='taxons-header' class='panel-heading'></div>"+
-				"<div id='taxons-body' class='panel-body'>"+
-					"<div class='row'>"+
-						"<div id='taxons-body-obs' class='col-md-6'></div>"+
-						"<div id='taxons-body-taxons' class='col-md-6'></div>"+
-					"</div>"+
-					"<div class='row' id='taxons_body_reset'></div>"+
 				"</div>"+
 			"</div>"+
 			
@@ -1299,7 +1313,7 @@ function mapa_observacions(acronim)
 {
 
 	//Actualitzo el títol
-	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences'))+'</h1>'+
+	$('div#mapa-observacions-header').html('<h1 class="panel-title">'+_.capitalize(bioxpn_config.translates.get_translate('occurrences_map'))+'</h1>'+
 											bioxpn_config.translates.get_translate('occurrences_map_subtitle'));
 	
 	//Instàncies dels objectes amb les capes WMS 
@@ -1987,8 +2001,8 @@ function graph_bar_fontdades(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#fontsdades-body").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -2131,14 +2145,17 @@ function graph_pie_template(div, titol, dades)
 	defaults.data.content = dades;
 
 	var pie = new d3pie(div, defaults);
-	$('div#'+div+' svg').attr('class', 'img-responsive');
+	$('div#'+div+' svg')
+	.attr('class', 'img-responsive')
+	.attr('style', 'width:'+400+'px;'+'height:'+300+'px;');
 	return pie;
 };
 
 function graph_pie_params(div, params)
 {
 	var pie = new d3pie(div, params);
-	$('div#'+div+' svg').attr('class', 'img-responsive');
+	$('div#'+div+' svg').attr('class', 'img-responsive')
+	.attr('style', 'width:'+params.size.canvasWidth+'px;'+'height:'+params.size.canvasHeight+'px;');
 	return pie;
 };
 
@@ -2297,8 +2314,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#observacions_ocurrence_date").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -2449,8 +2466,8 @@ function graph_bar_observacions_elevation(dades)
 
 	//Objecte grafic
 	var svg = d3.select("div#observacions-body-elevation").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .style('width', width + margin.left + margin.right+'px')
+	    .style('height', height + margin.top + margin.bottom+'px')
 	    .attr("class", "img-responsive")
 		.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -3266,7 +3283,8 @@ function main_(acr)
 
 	create_page();
 	
-	$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
+	//$('#park_name').append('<h6>'+bioxpn_config.get_nom_oficial(acronim)+'</h6>');
+	$('#park_name').append('<h1 class="section_cab tam_h1">'+bioxpn_config.get_nom_oficial(acronim)+'</h1><hr class="line_xarxa_parcs_full">');
 	$('#intro').append(bioxpn_config.translates.get_translate('intro'));
 	$('#disclaimer').append('<p>'+bioxpn_config.translates.get_translate('disclaimer')+'</p>');
 	$('#footer_header').append(bioxpn_config.translates.get_translate('colaborate'));

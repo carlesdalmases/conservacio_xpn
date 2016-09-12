@@ -74,6 +74,7 @@ TRANSLATES.prototype.load_translates = function()
 	
 	//General
 	this.set_translates('occurrences','ca','observacions');
+	this.set_translates('occurrences_map','ca','Distribució espacial de les observacions'); 
 	this.set_translates('altres','ca','Altres');
 	this.set_translates('desconegut','ca','Desconegut');
 	this.set_translates('acumulat','ca','Acumulat');
@@ -86,7 +87,8 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('permesos','ca','per mesos de l\'any');
 	this.set_translates('occurrencesdensity','ca','Densitat d\'observacions');
 	this.set_translates('taxons','ca','Tàxons');
-	
+	this.set_translates('credits','ca','Crèdits');
+		
 	//Tipus de registre
 	this.set_translates('PreservedSpecimen','ca','espècimen preservat');
 	this.set_translates('HumanObservation','ca','observació humana');
@@ -163,25 +165,26 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('perdates','ca','per dates');
 	
 
-	this.set_translates('downloads','ca','Descàrregues');
+	this.set_translates('downloads','ca','Descàrregues (<a href="https://ca.wikipedia.org/wiki/CSV">en format CSV</a>)');
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
 	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina s\'està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',
-	
+		'<p>Conèixer les espècies presents a l\’Espai Natural i la seva distribució geogràfica és essencial per valorar la seva riquesa i singularitat. '+
+		'Aquesta informació és ara més fàcil de consultar i analitzar gràcies a les grans bases de dades de biodiversitat que recullen cites i observacions '+
+		'd’espècies de fonts diverses.<p>'+
 		'<p>La informació referent a la biodiversitat que es presenta en aquesta pàgina es crea de forma automàtica,'+
 		'a partir de les fonts d\'informació indexades al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a>.</p>'+
 		'<p>Cal tenir present que les dades inclouen observacions de camps, espècies fòssils, plecs d\'herbari, exemplars conservats en museus, etc. '+ 
 		'També cal considerar la distribució espacial de les observacions, amb coordenades més o menys precises, i l\'escala dels límits de l\'espai natural utilitzats per a fer la consulta.</p>'+
 		'<p>Periòdicament s\'actualitzen i amplien les fonts d\'informació al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a> i, '+ 
 		'automàticament, s\'actualitza aquesta pàgina. Si teniu coneixement d\'un conjunt d\'observacions en aquest Parc Natural que podria completar aquesta informació, '+ 
-		'en ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>');
-
+		'ens ho podeu fer saber a: <a href= \'mailto:xarxaparcs@diba.cat?subject=[BIODIBA]:\'>xarxaparcs@diba.cat</a></p>');
 	this.set_translates('jerarquiataxonomica_subtitle','ca',
 	'Totes les observacions i els tàxons ordenats per jerarquia taxònomica. Interactiu.');
 
 	this.set_translates('occurrences_subtitle','ca',
 	'Es mostra el perfil altitudinal de distribució de les observacions (en el cas que tinguin documentada l\'altitud) '+
-	'el tipus d\'observació (observació al camp, registre fòssil, plec d\'herbari, etc.), la distribució de les observacions al llarg de l\'any i '+
+	'el tipus de registre (observació al camp, registre fòssil, plec d\'herbari, etc.), la distribució de les observacions al llarg de l\'any i '+
 	'finalment, la seva distribució temporal.');
 
 	this.set_translates('qualitatdades_subtitle','ca',
@@ -197,11 +200,11 @@ TRANSLATES.prototype.load_translates = function()
 	'Distribució de les observacions segons la font d\'informació original.');
 
 	this.set_translates('occurrences_map_subtitle','ca',
-	'Distribució espacial de les observacions. Es pot consultar una localitat concreta i buscar per un determinat tàxon. '+
-	'Per una localitat concreta, es poden descarregar (CSV) la llista de d\'observacions i tàxons presents.');
+	'Es pot consultar una localitat concreta i buscar per un determinat tàxon. '+
+	'Per una localitat concreta, es pot descarregar <a href="https://ca.wikipedia.org/wiki/CSV">en format CSV</a> la llista de d\'observacions i tàxons presents.');
 
 	this.set_translates('occurrencesdensity_subtitle','ca',
-	'Densitats d\'observacions en una quadrícula arbritària.');
+	'Densitats d\'observacions per quadrícula (de mida variable segons el nivell de zoom).');
 
 		
 /*
