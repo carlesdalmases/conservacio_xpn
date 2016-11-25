@@ -169,9 +169,6 @@ TRANSLATES.prototype.load_translates = function()
 	this.set_translates('colaborate','ca','Amb la col·laboració de:');
 	this.set_translates('disclaimer','ca','Descarregant qualsevol contingut d\'aquesta pàgina s\'està acceptant la <a href=\'http://www.gbif.es/Recursos.php#tabs-5\'>normativa de GBIF España i la del proveïdor de dades específic</a>.');
 	this.set_translates('intro','ca',
-		'<p>Conèixer les espècies presents a l\’Espai Natural i la seva distribució geogràfica és essencial per valorar la seva riquesa i singularitat. '+
-		'Aquesta informació és ara més fàcil de consultar i analitzar gràcies a les grans bases de dades de biodiversitat que recullen cites i observacions '+
-		'd’espècies de fonts diverses.<p>'+
 		'<p>La informació referent a la biodiversitat que es presenta en aquesta pàgina es crea de forma automàtica,'+
 		'a partir de les fonts d\'informació indexades al servidor de <a href=\'http://www.gbif.es\'>GBIF.es</a>.</p>'+
 		'<p>Cal tenir present que les dades inclouen observacions de camps, espècies fòssils, plecs d\'herbari, exemplars conservats en museus, etc. '+ 
