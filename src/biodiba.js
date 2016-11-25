@@ -2014,6 +2014,8 @@ function graph_bar_fontdades(dades)
 		.attr("y",10)
 		.attr("x", 9)
 		.attr("dy", ".35em")
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.attr("transform", "rotate(50)")
 		.style("text-anchor", "start")
 		;
@@ -2082,6 +2084,8 @@ function graph_bar_fontdades(dades)
 		.append("text")
 		.attr("text-anchor", "end")  // this makes it easy to centre the text as the transform is applied to the anchor
 		.attr("transform", "translate("+ (scaleX(scaleX.domain()[1])) +","+(height-(20/3))+")")  // centre below axis
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.text(bioxpn_config.translates.get_translate('occurrences'));
 		
 
@@ -2339,6 +2343,8 @@ function graph_bar_observacions_ocurrence_date(dades)
 		.attr("transform", "rotate(-90)")
 		.attr("y", 6)
 		.attr("dy", ".71em")
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.style("text-anchor", "end")
 		.text(bioxpn_config.translates.get_translate('occurrences'));
 
@@ -2353,9 +2359,17 @@ function graph_bar_observacions_ocurrence_date(dades)
 		.attr("transform", "rotate(-90)")
 		.attr("y", -10)
 		.attr("dy", ".71em")
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.style("text-anchor", "end")
 		.text(bioxpn_config.translates.get_translate('acumulat'));
 		;	
+
+	//Modifico la mida dels textos dels ticks
+	svg.selectAll('.tick text')
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
+		;
 
 	svg.selectAll(".bar")
 		.data(dades)
@@ -2495,6 +2509,13 @@ function graph_bar_observacions_elevation(dades)
 		.attr("transform", "translate(0,"+(bar_height/2)+")")
 		;	
 
+	//Modifico la mida dels textos dels ticks
+	svg.selectAll('.tick text')
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
+		;
+
+
 	//Afegir barres
 	svg.append('g')
 		.attr('id','bars')
@@ -2545,6 +2566,8 @@ function graph_bar_observacions_elevation(dades)
 		.append("text")
 		.attr("text-anchor", "end")  // this makes it easy to centre the text as the transform is applied to the anchor
 		.attr("transform", "translate("+ (scaleX(scaleX.domain()[1])) +","+(height-(20/3))+")")  // centre below axis
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.text(bioxpn_config.translates.get_translate('occurrences'));
 
 	//Afegeixo el títol de l'eix Y
@@ -2553,6 +2576,8 @@ function graph_bar_observacions_elevation(dades)
 		.append("text")
 		.attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
 		.attr("transform", "translate("+(scaleX(scaleX.domain()[0])-30) +","+(height/2)+") rotate(-90)")  
+		.style("font-size", "10px")
+		.style("font-family", "sans-serif")
 		.text(bioxpn_config.translates.get_translate('metres'));
 
 
