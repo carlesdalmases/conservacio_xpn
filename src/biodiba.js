@@ -309,7 +309,7 @@ BIOXPN_CONFIG.prototype.get_xpn = function(acronim)
 //Retorna el qid d'un parc donat el seu acronim
 BIOXPN_CONFIG.prototype.get_qid = function(acronim) 
 {
-    return (this.get_xpn(acronim)).get_qid();
+    return 'q=qid:'+(this.get_xpn(acronim)).get_qid();
 };
 
 //Retorna el nom oficial d'un parc donat el seu acronim
@@ -389,7 +389,7 @@ BIOXPN_CONFIG.prototype.get_URL_observacions_assertions_missing = function(acron
 //La llista de facets disponibles: http://datos.gbif.es/biocache-service/index/fields
 BIOXPN_CONFIG.prototype.get_URL_acronim_facet = function(acronim, facet) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets='+facet+'&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
+	return this.ALAserver+'/biocache-service/occurrences/search.json?'+this.get_qid(acronim)+'&facets='+facet+'&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
 };
 
 //Retorna la URL per obtenir un facet determinat en el punt  LAT/LON amb un radi determinat
@@ -402,7 +402,7 @@ BIOXPN_CONFIG.prototype.get_URL_puntradi_facet = function(facet, coordenades, ra
 //Retorna la URL per saber si una observació concreta (id) es troba dins de l'àmbit de 'acrònim'
 BIOXPN_CONFIG.prototype.get_URL_acronim_obsID = function(acronim, obs_id) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?fq=id:'+obs_id+'&q=qid:'+this.get_qid(acronim)+'&facet=off&pageSize=0';
+	return this.ALAserver+'/biocache-service/occurrences/search.json?fq=id:'+obs_id+'&'+this.get_qid(acronim)+'&facet=off&pageSize=0';
 };
 
 //Retorna la URL per saber el número de taxons en un latlon_radi
@@ -420,19 +420,19 @@ BIOXPN_CONFIG.prototype.get_URL_numobs_taxonname_puntradi = function(taxon_name,
 //Retorna la URL per descarregar les observacions d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/index/download?q=qid:'+this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
+	return this.ALAserver+'/biocache-service/occurrences/index/download?'+this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p';
 };
 
 //Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc';
 };
 
 //Retorna la URL per descarregar la llista de fonts de dades d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_dataresourcesdownload = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/facets/download?q=qid:'+this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc';
+	return this.ALAserver+'/biocache-service/occurrences/facets/download?'+this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc';
 };
 
 
@@ -464,27 +464,27 @@ BIOXPN_CONFIG.prototype.get_URL_WMS = function(acronim)
 //Retorna la URL per obtenir la llista de taxon_name present a acronim
 BIOXPN_CONFIG.prototype.get_URL_taxonnamelist = function(acronim) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index'
+	return this.ALAserver+'/biocache-service/occurrences/search.json?'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index'
 };
 
 //Retorna la URL per obtenir els taxons i observacions concrets per un grup i acronim
 BIOXPN_CONFIG.prototype.get_URL_group = function(acronim, group) 
 {
 	//return this.ALAserver+'/biocache-service/explore/counts/group/'+group+'?fq=qid:'+this.get_qid(acronim) --> NO funciona
-	return this.ALAserver+'/biocache-service/occurrences/search.json?q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index&fq=species_group:'+group;
+	return this.ALAserver+'/biocache-service/occurrences/search.json?'+this.get_qid(acronim)+'&facets=taxon_name&flimit=-1&foffset=0&pageSize=0&sort=taxon_name&dir=asc&fsort=index&fq=species_group:'+group;
 
 };
 
 //Retorna la URL per obtenir la jerarquia taxònomica donat un rank, name i acronim (retorna el número d'observacions)
 BIOXPN_CONFIG.prototype.get_URL_breakdown_observacions = function(acronim, rank, r_name) 
 {
-	return this.ALAserver+'/biocache-service/breakdown.json?q=qid:'+this.get_qid(acronim)+'&rank='+rank+(_.isUndefined(r_name)?'':'&name='+r_name);
+	return this.ALAserver+'/biocache-service/breakdown.json?'+this.get_qid(acronim)+'&rank='+rank+(_.isUndefined(r_name)?'':'&name='+r_name);
 };
 
 //Retorna la URL per obtenir la jerarquia taxònomica donat un rank, name i acronim (retorna el número d'observacions)
 BIOXPN_CONFIG.prototype.get_URL_breakdown_numtaxa = function(acronim, rank, r_name) 
 {
-	return this.ALAserver+'/biocache-service/occurrences/search.json?fq='+rank+':'+r_name+'&q=qid:'+this.get_qid(acronim)+'&facets=taxon_name&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
+	return this.ALAserver+'/biocache-service/occurrences/search.json?fq='+rank+':'+r_name+'&'+this.get_qid(acronim)+'&facets=taxon_name&foffset=0&pageSize=0&dir=asc&fsort=index&flimit=-1';
 };
 
 
