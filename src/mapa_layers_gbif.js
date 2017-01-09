@@ -27,7 +27,9 @@ function CAPES_GBIF(acronim)
 					'SRS': 'EPSG:3857',
 					//'ENV': 'colormode:basis_of_record;name:circle;size:4;opacity:1;',
 					'ENV': 'color:ff0000;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					//'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt=')
 				}
 			})
 		})
@@ -55,7 +57,8 @@ function CAPES_GBIF(acronim)
 					'SRS': 'EPSG:3857',
 					'ENV': 'colormode:grid;opacity:1;',
 					//'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt=')
 				}
 			})
 		})
