@@ -247,6 +247,9 @@ function XPN(qid,acronim,nom_oficial,centermap_lonlat,zoom_initial)
 	
 	//Zoom inicial al mapa
 	this.zoom_initial = zoom_initial;
+	
+	//WKT
+	this.wkt = wkt;
 
 };// Fi de XPN()
 
@@ -255,7 +258,7 @@ XPN.prototype.get_acronim = function(){return this.acronim;};
 XPN.prototype.get_nomoficial = function(){return this.nom_oficial;};
 XPN.prototype.get_centermaplonlat = function(){return this.centermap_lonlat;};
 XPN.prototype.get_zoominitial = function(){return this.zoom_initial;};
-
+XPN.prototype.get_wkt = function(){return this.wkt;};
 
 
 function ZR(zoom, radius)
