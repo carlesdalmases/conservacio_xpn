@@ -985,7 +985,8 @@ var colorbrewer = {YlGn: {
 				 data:url_query[1],
 				 url:url_query[0]});
 
-    var qs = $.ajax();
+    //var qs = $.ajax();
+    var qs = $.post();
 
     $.when(qs).done(function(data){deferred.resolve(data)});
     return deferred.promise();
