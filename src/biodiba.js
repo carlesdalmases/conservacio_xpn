@@ -421,38 +421,38 @@ BIOXPN_CONFIG.prototype.get_URL_numobs_taxonname_puntradi = function(taxon_name,
 //Retorna la URL per descarregar les observacions d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload = function(acronim) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/index/download?',this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
+	return [this.ALAserver+'/biocache-service/occurrences/index/download?q=*:*&'+this.get_qid(acronim)+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
 };
 
 //Retorna la URL per descarregar una checklist d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload = function(acronim) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/facets/download?',this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc'];
+	return [this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&'+this.get_qid(acronim)+'&facets=taxon_name&count=false&fsort=index&dir=asc'];
 };
 
 //Retorna la URL per descarregar la llista de fonts de dades d'un acronim
 BIOXPN_CONFIG.prototype.get_URL_dataresourcesdownload = function(acronim) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/facets/download?',this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc'];
+	return [this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&'+this.get_qid(acronim)+'&facets=data_resource&count=false&fsort=index&dir=asc'];
 };
 
 
 //Retorna la URL per descarregar una checklist d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_checlistkdownload_puntradi = function(coordenades,radi) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/facets/download?','q=*:*&facets=taxon_name&count=false&fsort=index&dir=asc&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi];
+	return [this.ALAserver+'/biocache-service/occurrences/facets/download?q=*:*&facets=taxon_name&count=false&fsort=index&dir=asc&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi];
 };
 
 //Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_puntradi = function(coordenades,radi) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/index/download?','q=*:*&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
+	return [this.ALAserver+'/biocache-service/occurrences/index/download?q=*:*&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
 };
 
 //Retorna la URL per descarregar les observacions d'una consulta en el punt LAT/LON amb un radi determinat
 BIOXPN_CONFIG.prototype.get_URL_occurrencesdownload_taxonname_puntradi = function(taxon_name,coordenades,radi) 
 {
-	return [this.ALAserver+'/biocache-service/occurrences/index/download?','fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
+	return [this.ALAserver+'/biocache-service/occurrences/index/download?q=*:*&fq=taxon_name:'+taxon_name+'&lat='+coordenades[1]+'&lon='+coordenades[0]+'&radius='+radi+'&reasonTypeId=0&extra=dataResourceUid,dataResourceName.p'];
 };
 
 
@@ -1116,7 +1116,8 @@ CAPES_GBIF.prototype.get_tilelayer = function(nom_layer)
 //Mètode que retorna un la URL amb el PNG de la llegenda del heatmap
 CAPES_GBIF.prototype.get_heatmap_legend = function(acronim)
 {
-	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'
+	//return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'
+	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*&wkt:'+_.trimStart(bioxpn_config.get_qid(acronim), 'wkt=')+'&facet:off';
 };
 
 
@@ -1142,7 +1143,9 @@ CAPES_GBIF.prototype.set_layer_selection_taxon = function(taxon_name)
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
 					'ENV': 'color:ffd700;name:circle;size:4;opacity:1;',
-					'q': ',qid:'+bioxpn_config.get_qid(this.a),
+					//'q': ',qid:'+bioxpn_config.get_qid(this.a),
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt='),
 					'fq': 'taxon_name:'+taxon_name
 				}
 			})
@@ -1188,8 +1191,9 @@ CAPES_GBIF.prototype.set_layer_selection_puntradi = function(coordenades, radi)
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
 					'ENV': 'color:33ffff;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
-					//'q': '*:*',
+					//'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt='),
 					'lat':coordenades[1],
 					'lon':coordenades[0],
 					'radius': radi
