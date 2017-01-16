@@ -27,7 +27,9 @@ function CAPES_GBIF(acronim)
 					'SRS': 'EPSG:3857',
 					//'ENV': 'colormode:basis_of_record;name:circle;size:4;opacity:1;',
 					'ENV': 'color:ff0000;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					//'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt=')
 				}
 			})
 		})
@@ -55,7 +57,8 @@ function CAPES_GBIF(acronim)
 					'SRS': 'EPSG:3857',
 					'ENV': 'colormode:grid;opacity:1;',
 					//'ENV': 'color:336b08;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a)
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt=')
 				}
 			})
 		})
@@ -75,7 +78,8 @@ CAPES_GBIF.prototype.get_tilelayer = function(nom_layer)
 //Mètode que retorna un la URL amb el PNG de la llegenda del heatmap
 CAPES_GBIF.prototype.get_heatmap_legend = function(acronim)
 {
-	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'
+	//return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*,qid:'+bioxpn_config.get_qid(acronim)+'&facet:off'
+	return bioxpn_config.get_ALAserver()+'/biocache-service/density/legend?'+'q:*:*&wkt:'+_.trimStart(bioxpn_config.get_qid(acronim), 'wkt=')+'&facet:off';
 };
 
 
@@ -101,7 +105,9 @@ CAPES_GBIF.prototype.set_layer_selection_taxon = function(taxon_name)
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
 					'ENV': 'color:ffd700;name:circle;size:4;opacity:1;',
-					'q': ',qid:'+bioxpn_config.get_qid(this.a),
+					//'q': ',qid:'+bioxpn_config.get_qid(this.a),
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt='),
 					'fq': 'taxon_name:'+taxon_name
 				}
 			})
@@ -147,8 +153,9 @@ CAPES_GBIF.prototype.set_layer_selection_puntradi = function(coordenades, radi)
 					'STYLE': 'opacity:0.8',
 					'SRS': 'EPSG:3857',
 					'ENV': 'color:33ffff;name:circle;size:3;opacity:1;',
-					'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
-					//'q': '*:*',
+					//'q': '*:*,qid:'+bioxpn_config.get_qid(this.a),
+					'q': '*:*',
+					'wkt':_.trimStart(bioxpn_config.get_qid(this.a), 'wkt='),
 					'lat':coordenades[1],
 					'lon':coordenades[0],
 					'radius': radi
